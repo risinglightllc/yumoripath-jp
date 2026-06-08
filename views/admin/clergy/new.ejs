@@ -1,0 +1,32 @@
+<%- include('../admin_partials/header', { currentPath: '/admin/clergy', pageTitle: 'Add Partner' }) %>
+<div class="topbar"><h1>Add Clergy Partner</h1><a href="/admin/clergy" class="btn btn-secondary">← Back</a></div>
+<% if (typeof error \!== 'undefined' && error) { %><div class="err"><%= error %></div><% } %>
+<div class="card">
+  <form method="POST" action="/admin/clergy">
+    <div class="two-col">
+      <div class="form-group"><label>Temple/Shrine/Organization</label><input type="text" name="temple_shrine_org_name" required></div>
+      <div class="form-group"><label>Religious Tradition</label><select name="religious_tradition"><option value="Buddhist">Buddhist</option><option value="Shinto">Shinto</option><option value="Other">Other</option></select></div>
+    </div>
+    <div class="two-col">
+      <div class="form-group"><label>Contact Person</label><input type="text" name="contact_person"></div>
+      <div class="form-group"><label>Email</label><input type="email" name="email"></div>
+    </div>
+    <div class="two-col">
+      <div class="form-group"><label>Phone</label><input type="text" name="phone"></div>
+      <div class="form-group"><label>Denomination</label><input type="text" name="denomination" placeholder="例: 真宗, 神道"></div>
+    </div>
+    <div class="two-col">
+      <div class="form-group"><label>Prefecture</label><input type="text" name="prefecture" placeholder="例: 東京都"></div>
+      <div class="form-group"><label>Municipality</label><input type="text" name="municipality"></div>
+    </div>
+    <div class="form-group"><label>Services Offered</label><input type="text" name="services_offered" placeholder="例: お祓い, 慰霊, 清祓"></div>
+    <div class="two-col">
+      <div class="form-group"><label>Accepts Real Estate Cases</label><select name="accepts_real_estate_cases"><option value="false">No</option><option value="true">Yes</option></select></div>
+      <div class="form-group"><label>Registration Status</label><select name="registration_status"><option value="pending">Pending</option><option value="approved">Approved</option><option value="active">Active</option></select></div>
+    </div>
+    <div class="form-group"><label>Public Source URL</label><input type="url" name="public_source_url" placeholder="Where you found this partner"></div>
+    <div class="form-group"><label>Notes</label><textarea name="notes"></textarea></div>
+    <div class="actions"><button type="submit" class="btn btn-primary">Add Partner</button></div>
+  </form>
+</div>
+<%- include('../admin_partials/footer') %>

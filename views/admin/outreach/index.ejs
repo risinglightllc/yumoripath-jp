@@ -1,0 +1,32 @@
+<%- include('../admin_partials/header', { currentPath: '/admin/outreach', pageTitle: 'Outreach Log' }) %>
+<div class="topbar"><h1>Outreach Log</h1><a href="/admin/outreach/new" class="btn btn-primary">+ Log Outreach</a></div>
+<div class="card">
+  <div class="card-title">Filters</div>
+  <form class="filter-bar" method="GET" action="/admin/outreach">
+    <select name="recipient_type"><option value="">All Types</option><option value="real_estate" <%= filters.recipient_type === 'real_estate' ? 'selected' : '' %>>Real Estate</option><option value="clergy" <%= filters.recipient_type === 'clergy' ? 'selected' : '' %>>Clergy</option><option value="vendor" <%= filters.recipient_type === 'vendor' ? 'selected' : '' %>>Vendor</option></select>
+    <select name="response_status"><option value="">All Responses</option><% RESPONSE_STATUSES.forEach(s => { %><option value="<%= s %>" <%= filters.response_status === s ? 'selected' : '' %>><%= s %></option><% }) %></select>
+    <label style="display:flex;align-items:center;gap:4px;font-size:13px"><input type="checkbox" name="overdue" <%= filters.overdue ? 'checked' : '' %>> Show overdue follow-ups</label>
+    <button type="submit" class="btn btn-secondary">Filter</button><a href="/admin/outreach" class="btn btn-secondary">Clear</a>
+  </form>
+</div>
+<div class="card">
+  <% if (entries.length === 0) { %><div class="empty">No outreach logged — <a href="/admin/outreach/new">log the first one</a></div>
+  <% } else { %>
+  <table>
+    <thead><tr><th>Date</th><th>Recipient</th><th>Type</th><th>Template</th><th>Response</th><th>Follow-up</th><th></th></tr></thead>
+    <tbody>
+      <% entries.forEach(e => { const isOverdue = e.next_follow_up_date && e.next_follow_up_date <= new Date().toISOString().split('T')[0] && e.response_status === 'no response'; %>
+        <tr>
+          <td><%= e.date_sent ? new Date(e.date_sent).toLocaleDateString('ja-JP') : '—' %></td>
+          <td><strong><%= e.recipient || '—' %></strong></td>
+          <td><span class="badge badge-<%= e.recipient_type === 'clergy' ? 'matching' : e.recipient_type === 'vendor' ? 'review' : 'muted' %>"><%= e.recipient_type %></span></td>
+          <td><%= e.template_used || '—' %></td>
+          <td><span class="badge badge-<%= e.response_status === 'converted' ? 'success' : e.response_status === 'interested' ? 'matching' : e.response_status === 'bounced' ? 'danger' : 'muted' %>"><%= e.response_status %></span></td>
+          <td><% if (isOverdue) { %><span class="badge badge-danger">Overdue</span><% } else { %><%= e.next_follow_up_date || '—' %><% } %></td>
+          <td><a href="/admin/outreach">Respond →</a></td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table><% } %>
+</div>
+<%- include('../admin_partials/footer') %>

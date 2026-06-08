@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= typeof pageTitle !== 'undefined' ? pageTitle : 'Admin' %> — 湯守道</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#faf8f5;--panel:#fff;--border:#e8e2d9;--text:#2c2c2c;--muted:#7a7368;--accent:#8b6e4e;--accent-dark:#6a5238;}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text);font-size:14px}
+    .admin-wrap{display:flex;min-height:100vh}
+    .sidebar{width:220px;flex-shrink:0;background:var(--panel);border-right:1px solid var(--border);position:sticky;top:0;height:100vh;overflow-y:auto}
+    .logo{padding:20px 20px 16px;font-weight:700;font-size:15px;color:var(--accent-dark);border-bottom:1px solid var(--border)}
+    .section{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);padding:16px 20px 6px}
+    .nav{list-style:none;padding-bottom:8px}
+    .nav a{display:block;padding:8px 20px;color:var(--muted);text-decoration:none;font-size:13px;font-weight:500}
+    .nav a:hover{background:var(--bg);color:var(--accent)}
+    .nav a.active{color:var(--accent);background:#f5f0ea}
+    .nav-form{display:block;padding:8px 20px;color:var(--muted);font-size:13px;font-weight:500;cursor:pointer;border:none;background:none;width:100%;text-align:left;font-family:inherit}
+    .nav-form:hover{background:var(--bg);color:var(--accent)}
+    .content{flex:1;padding:28px 32px;overflow-x:auto}
+    .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
+    h1{font-size:22px;font-weight:700;color:var(--accent-dark)}
+    .btn{display:inline-flex;align-items:center;gap:5px;padding:7px 14px;border-radius:6px;font-size:13px;font-weight:500;text-decoration:none;cursor:pointer;border:none}
+    .btn-primary{background:var(--accent);color:#fff}.btn-primary:hover{background:var(--accent-dark)}
+    .btn-secondary{background:var(--panel);color:var(--text);border:1px solid var(--border)}
+    .btn-secondary:hover{background:var(--bg)}
+    .card{background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:20px;margin-bottom:16px}
+    .card-title{font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+    table{width:100%;border-collapse:collapse;font-size:13px}
+    th{text-align:left;padding:9px 12px;background:var(--bg);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);border-bottom:1px solid var(--border)}
+    td{padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:top}
+    tr:last-child td{border-bottom:none}
+    tr:hover td{background:#fdfcfa}
+    .badge{display:inline-block;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:500}
+    .badge-new{background:#dbeafe;color:#1d4ed8}.badge-review{background:#fef3c7;color:#92400e}.badge-matching{background:#ede9fe;color:#5b21b6}.badge-scheduled{background:#d1fae5;color:#065f46}.badge-completed{background:#f3f4f6;color:#374151}.badge-danger{background:#fee2e2;color:#991b1b}.badge-warning{background:#fef3c7;color:#92400e}.badge-success{background:#d1fae5;color:#065f46}.badge-muted{background:#f3f4f6;color:#6b7280}
+    .stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-bottom:24px}
+    .stat-card{background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:18px}
+    .stat-card .lbl{font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin-bottom:6px}
+    .stat-card .val{font-size:26px;font-weight:700;color:var(--accent-dark)}
+    .stat-card .sub{font-size:11px;color:var(--muted);margin-top:4px}
+    .filter-bar{display:flex;gap:8px;align-items:center;margin-bottom:16px;flex-wrap:wrap}
+    .filter-bar select,.filter-bar input{padding:6px 10px;border:1px solid var(--border);border-radius:6px;font-size:13px;background:var(--panel)}
+    .empty{text-align:center;padding:40px 24px;color:var(--muted);font-size:13px}
+    .err{background:#fee2e2;color:#991b1b;padding:10px 14px;border-radius:6px;margin-bottom:16px;font-size:13px}
+    .form-group{margin-bottom:14px}.form-group label{display:block;font-weight:500;font-size:12px;margin-bottom:5px;color:var(--muted)}
+    .form-group input,.form-group select,.form-group textarea{width:100%;padding:8px 11px;border:1px solid var(--border);border-radius:6px;font-size:13px;background:var(--panel)}
+    .form-group textarea{resize:vertical;min-height:80px}
+    .two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .four-col{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px}
+    .detail-row{display:flex;border-bottom:1px solid var(--border);padding:8px 0}
+    .detail-lbl{font-weight:500;color:var(--muted);min-width:160px;font-size:12px;flex-shrink:0}
+    .detail-val{font-size:13px}
+    .match-card{border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:10px}
+    .match-tier{font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+    .match-reason{font-weight:600;margin:3px 0;font-size:13px}
+    .match-cta{display:inline-block;padding:4px 9px;border-radius:5px;font-size:12px;margin-top:6px}
+    .match-caution{background:#fef3c7;color:#92400e}
+    .match-action{background:#d1fae5;color:#065f46}
+    .finance-row{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:20px}
+    .fin-item{background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:14px;text-align:center}
+    .fin-item .amt{font-size:20px;font-weight:700;color:var(--accent-dark)}
+    .fin-item .lbl{font-size:10px;text-transform:uppercase;color:var(--muted);margin-top:3px}
+    .log-entry{border-left:3px solid var(--border);padding-left:14px;margin-bottom:14px}
+    .log-date{font-size:11px;color:var(--muted);margin-bottom:3px}
+    .log-recipient{font-weight:600;font-size:13px;margin-bottom:2px}
+    .log-type{font-size:11px;color:var(--muted)}
+    .actions{display:flex;gap:8px;margin-top:16px}
+    .section-title{font-size:16px;font-weight:700;color:var(--accent-dark);margin:24px 0 12px}
+    @media(max-width:768px){.two-col,.four-col{grid-template-columns:1fr}.finance-row{grid-template-columns:1fr 1fr}.admin-wrap{flex-direction:column}.sidebar{width:100%;height:auto;position:static}}
+  </style>
+</head>
+<body>
+<div class="admin-wrap">
+  <nav class="sidebar">
+    <div class="logo">湯守道 Admin</div>
+    <div class="section">Operations</div>
+    <ul class="nav">
+      <li><a href="/admin" class="<%= currentPath === '/admin' ? 'active' : '' %>">Dashboard</a></li>
+      <li><a href="/admin/cases" class="<%= currentPath.startsWith('/admin/cases') ? 'active' : '' %>">Case Pipeline</a></li>
+      <li><a href="/admin/leads" class="<%= currentPath.startsWith('/admin/leads') ? 'active' : '' %>">Real Estate Leads</a></li>
+      <li><a href="/admin/clergy" class="<%= currentPath.startsWith('/admin/clergy') ? 'active' : '' %>">Clergy Partners</a></li>
+      <li><a href="/admin/outreach" class="<%= currentPath.startsWith('/admin/outreach') ? 'active' : '' %>">Outreach</a></li>
+      <li><a href="/admin/finance" class="<%= currentPath.startsWith('/admin/finance') ? 'active' : '' %>">Finance</a></li>
+    </ul>
+    <div class="section" style="margin-top:auto;padding-top:16px">Session</div>
+    <ul class="nav">
+      <li>
+        <form method="POST" action="/admin/logout" style="margin:0">
+          <button type="submit" class="nav-form">Sign Out</button>
+        </form>
+      </li>
+    </ul>
+  </nav>
+  <div class="content">

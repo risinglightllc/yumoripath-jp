@@ -1,0 +1,31 @@
+<%- include('../admin_partials/header', { currentPath: '/admin/leads', pageTitle: 'Real Estate Leads' }) %>
+<div class="topbar"><h1>Real Estate Leads</h1><a href="/admin/leads/new" class="btn btn-primary">+ Add Lead</a></div>
+<div class="card">
+  <div class="card-title">Filters</div>
+  <form class="filter-bar" method="GET" action="/admin/leads">
+    <select name="outreach_status"><option value="">All Outreach</option><% OUTREACH_STATUSES.forEach(s => { %><option value="<%= s %>" <%= filters.outreach_status === s ? 'selected' : '' %>><%= s %></option><% }) %></select>
+    <select name="jiko_relevance"><option value="">All Relevance</option><% JIKO_RELEVANCES.forEach(s => { %><option value="<%= s %>" <%= filters.jiko_relevance === s ? 'selected' : '' %>><%= s %></option><% }) %></select>
+    <button type="submit" class="btn btn-secondary">Filter</button><a href="/admin/leads" class="btn btn-secondary">Clear</a>
+  </form>
+</div>
+<div class="card">
+  <% if (leads.length === 0) { %><div class="empty">No leads found — <a href="/admin/leads/new">add one</a></div>
+  <% } else { %>
+  <table>
+    <thead><tr><th>Company</th><th>Prefecture</th><th>Tags</th><th>Relevance</th><th>Outreach</th><th>Score</th><th></th></tr></thead>
+    <tbody>
+      <% leads.forEach(l => { %>
+        <tr>
+          <td><strong><%= l.company_name || '—' %></strong><br><span style="font-size:11px;color:var(--muted)"><%= l.contact_email || '—' %></span></td>
+          <td><%= l.prefecture || '—' %></td>
+          <td><span style="font-size:12px;color:var(--muted)"><%= l.specialty_tags || '—' %></span></td>
+          <td><span class="badge badge-<%= l.jiko_relevance === 'high' ? 'danger' : l.jiko_relevance === 'medium' ? 'warning' : 'muted' %>"><%= l.jiko_relevance %></span></td>
+          <td><span class="badge badge-<%= l.outreach_status === 'converted' ? 'success' : l.outreach_status === 'interested' ? 'matching' : l.outreach_status === 'contacted' ? 'review' : 'muted' %>"><%= l.outreach_status %></span></td>
+          <td><span class="badge badge-<%= l.confidence_score >= 80 ? 'success' : l.confidence_score >= 50 ? 'warning' : 'muted' %>"><%= l.confidence_score %></span></td>
+          <td><a href="/admin/leads/<%= l.id %>">View →</a></td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table><% } %>
+</div>
+<%- include('../admin_partials/footer') %>

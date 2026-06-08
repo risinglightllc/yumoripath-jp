@@ -1,0 +1,40 @@
+<%- include('../admin_partials/header', { currentPath: '/admin/cases', pageTitle: 'Case #' + c.case_id }) %>
+<div class="topbar"><h1>Case #<%= c.case_id %></h1><div style="display:flex;gap:8px"><a href="/admin/cases/<%= c.case_id %>/edit" class="btn btn-secondary">Edit</a><a href="/admin/cases" class="btn btn-secondary">← Back</a></div></div>
+<% if (c.status === 'New submission') { %><div style="background:#dbeafe;color:#1d4ed8;padding:10px 14px;border-radius:6px;margin-bottom:16px;font-size:13px">⚠ This case needs review — set a status to begin matching.</div><% } %>
+<div class="card"><div class="card-title">Details</div>
+  <div class="detail-row"><span class="detail-lbl">Company</span><span class="detail-val"><%= c.company_name || '—' %></span></div>
+  <div class="detail-row"><span class="detail-lbl">Contact</span><span class="detail-val"><%= c.contact_person || '—' %> · <%= c.email || '—' %> · <%= c.phone || '—' %></span></div>
+  <div class="detail-row"><span class="detail-lbl">Location</span><span class="detail-val"><%= c.prefecture || '—' %> <%= c.municipality || '' %></span></div>
+  <div class="detail-row"><span class="detail-lbl">Property Type</span><span class="detail-val"><%= c.property_type || '—' %></span></div>
+  <div class="detail-row"><span class="detail-lbl">Relationship</span><span class="detail-val"><%= c.relationship_to_property || '—' %></span></div>
+  <div class="detail-row"><span class="detail-lbl">Concern</span><span class="detail-val"><%= c.concern_category || '—' %></span></div>
+  <div class="detail-row"><span class="detail-lbl">Desired Service</span><span class="detail-val"><%= c.desired_service || '—' %></span></div>
+  <div class="detail-row"><span class="detail-lbl">Timeline</span><span class="detail-val"><%= c.timeline || '—' %></span></div>
+  <div class="detail-row"><span class="detail-lbl">Sensitivity</span><span class="detail-val"><%= c.sensitivity_level || '—' %></span></div>
+  <div class="detail-row"><span class="detail-lbl">Status</span><span class="detail-val"><span class="badge <%= c.status === 'New submission' ? 'badge-new' : c.status === 'Needs review' ? 'badge-review' : c.status === 'Priest/clergy matching' ? 'badge-matching' : c.status === 'Ceremony scheduled' ? 'badge-scheduled' : c.status === 'Completed' ? 'badge-completed' : 'badge-muted' %>"><%= c.status %></span></span></div>
+  <div class="detail-row"><span class="detail-lbl">Submitted</span><span class="detail-val"><%= c.submission_date ? new Date(c.submission_date).toLocaleString('ja-JP') : '—' %></span></div>
+  <% if (c.notes) { %><div class="detail-row" style="flex-direction:column;gap:4px"><span class="detail-lbl">Notes</span><span class="detail-val" style="white-space:pre-wrap"><%= c.notes %></span></div><% } %>
+</div>
+<div class="card"><div class="card-title">Update Status</div>
+  <form method="POST" action="/admin/cases/<%= c.case_id %>/status" style="display:flex;gap:8px;align-items:center">
+    <select name="status"><% STATUSES.forEach(s => { %><option value="<%= s %>" <%= c.status === s ? 'selected' : '' %>><%= s %></option><% }) %></select>
+    <button type="submit" class="btn btn-primary">Update</button>
+  </form>
+</div>
+<div class="card"><div class="card-title">Clergy Matching Suggestions</div>
+  <% if (matches.length === 0 || (matches.length === 1 && matches[0].tier === 3 && matches[0].partners.length === 0)) { %>
+    <div class="empty">No matching partners found — expand search or add more clergy.</div>
+  <% } else { matches.forEach(m => { %>
+    <div class="match-card">
+      <div class="match-tier">Tier <%= m.tier %> — Confidence: <%= m.confidence %>%</div>
+      <div class="match-reason"><%= m.reason %></div>
+      <% if (m.cautions) { %><div class="match-cta match-caution">⚠ <%= m.cautions %></div><% } %>
+      <div class="match-cta match-action">→ <%= m.next_action %></div>
+      <% if (m.partners.length > 0) { %>
+      <table style="margin-top:12px"><thead><tr><th>Partner</th><th>Prefecture</th><th>Services</th><th>Score</th><th></th></tr></thead><tbody>
+        <% m.partners.forEach(p => { %><tr><td><strong><%= p.temple_shrine_org_name %></strong></td><td><%= p.prefecture %></td><td><%= p.services_offered || '—' %></td><td><span class="badge badge-<%= p.confidence_score >= 80 ? 'success' : 'warning' %>"><%= p.confidence_score %></span></td><td><a href="/admin/clergy/<%= p.id %>">View →</a></td></tr><% }) %>
+      </tbody></table><% } %>
+    </div>
+  <% }) } %>
+</div>
+<%- include('../admin_partials/footer') %>

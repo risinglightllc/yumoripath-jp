@@ -1,0 +1,18 @@
+<%- include('../admin_partials/header', { currentPath: '/admin/finance', pageTitle: 'Payment #' + p.id }) %>
+<div class="topbar"><h1>Payment #<%= p.id %></h1><div style="display:flex;gap:8px"><a href="/admin/finance/<%= p.id %>/edit" class="btn btn-secondary">Edit</a><a href="/admin/finance" class="btn btn-secondary">← Back</a></div></div>
+<div class="card"><div class="card-title">Details</div>
+  <div class="detail-row"><span class="detail-lbl">Client</span><span class="detail-val"><%= p.client_name || '—' %></span></div>
+  <div class="detail-row"><span class="detail-lbl">Case ID</span><span class="detail-val"><%= p.case_id ? '<a href="/admin/cases/'+p.case_id+'">#'+p.case_id+'</a>' : '—' %></span></div>
+  <div class="detail-row"><span class="detail-lbl">Fee Type</span><span class="detail-val"><%= p.fee_type || '—' %></span></div>
+  <div class="detail-row"><span class="detail-lbl">Amount</span><span class="detail-val"><strong style="font-size:18px">¥<%= parseFloat(p.quoted_amount || 0).toLocaleString() %></strong></span></div>
+  <div class="detail-row"><span class="detail-lbl">Payment Status</span><span class="detail-val"><span class="badge badge-<%= p.payment_status === 'final_paid' ? 'success' : p.payment_status === 'deposit_paid' ? 'matching' : p.payment_status === 'unpaid' ? 'danger' : p.payment_status === 'pending' ? 'warning' : 'muted' %>"><%= p.payment_status %></span></span></div>
+  <div class="detail-row"><span class="detail-lbl">Payment Date</span><span class="detail-val"><%= p.payment_date || '—' %></span></div>
+  <div class="detail-row"><span class="detail-lbl">Stripe Status</span><span class="detail-val"><%= p.stripe_status || '—' %></span></div>
+  <div class="detail-row"><span class="detail-lbl">Invoice</span><span class="detail-val"><%= p.invoice_link ? '<a href="'+p.invoice_link+'" target="_blank">'+p.invoice_link+'</a>' : '—' %></span></div>
+  <% if (p.notes) { %><div class="detail-row" style="flex-direction:column;gap:4px"><span class="detail-lbl">Notes</span><span class="detail-val" style="white-space:pre-wrap"><%= p.notes %></span></div><% } %>
+  <div class="detail-row"><span class="detail-lbl">Created</span><span class="detail-val"><%= p.created_at ? new Date(p.created_at).toLocaleString('ja-JP') : '—' %></span></div>
+</div>
+<div style="background:#fef3c7;border:1px solid #fcd34d;border-radius:8px;padding:16px;font-size:13px;color:#92400e;margin-top:8px">
+  <strong>⚠ Stripe Integration: Placeholder only.</strong> To collect payment, use the Polsia dashboard to create a Stripe payment link.
+</div>
+<%- include('../admin_partials/footer') %>

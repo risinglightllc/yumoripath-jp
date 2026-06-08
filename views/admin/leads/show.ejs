@@ -1,0 +1,15 @@
+<%- include('../admin_partials/header', { currentPath: '/admin/leads', pageTitle: l.company_name }) %>
+<div class="topbar"><h1><%= l.company_name || 'Lead' %></h1><div style="display:flex;gap:8px"><a href="/admin/leads/<%= l.id %>/edit" class="btn btn-secondary">Edit</a><a href="/admin/leads" class="btn btn-secondary">← Back</a></div></div>
+<div class="card"><div class="card-title">Details</div>
+  <div class="detail-row"><span class="detail-lbl">Website</span><span class="detail-val"><%= l.website ? '<a href="'+l.website+'" target="_blank">'+l.website+'</a>' : '—' %></span></div>
+  <div class="detail-row"><span class="detail-lbl">Contact</span><span class="detail-val"><%= l.contact_email || '—' %> · <%= l.phone || '—' %></span></div>
+  <div class="detail-row"><span class="detail-lbl">Location</span><span class="detail-val"><%= l.prefecture || '—' %> <%= l.municipality || '' %></span></div>
+  <div class="detail-row"><span class="detail-lbl">Specialty Tags</span><span class="detail-val"><%= l.specialty_tags || '—' %></span></div>
+  <div class="detail-row"><span class="detail-lbl">Jiko Relevance</span><span class="detail-val"><span class="badge badge-<%= l.jiko_relevance === 'high' ? 'danger' : l.jiko_relevance === 'medium' ? 'warning' : 'muted' %>"><%= l.jiko_relevance %></span></span></div>
+  <div class="detail-row"><span class="detail-lbl">Outreach Status</span><span class="detail-val"><span class="badge badge-<%= l.outreach_status === 'converted' ? 'success' : l.outreach_status === 'interested' ? 'matching' : l.outreach_status === 'contacted' ? 'review' : 'muted' %>"><%= l.outreach_status %></span></span></div>
+  <div class="detail-row"><span class="detail-lbl">Last Contacted</span><span class="detail-val"><%= l.last_contacted_date || '—' %></span></div>
+  <div class="detail-row"><span class="detail-lbl">Confidence Score</span><span class="detail-val"><span class="badge badge-<%= l.confidence_score >= 80 ? 'success' : l.confidence_score >= 50 ? 'warning' : 'muted' %>"><%= l.confidence_score %></span></span></div>
+  <div class="detail-row"><span class="detail-lbl">Source</span><span class="detail-val"><%= l.source_url ? '<a href="'+l.source_url+'" target="_blank">'+l.source_url+'</a>' : '—' %></span></div>
+  <% if (l.notes) { %><div class="detail-row" style="flex-direction:column;gap:4px"><span class="detail-lbl">Notes</span><span class="detail-val" style="white-space:pre-wrap"><%= l.notes %></span></div><% } %>
+</div>
+<%- include('../admin_partials/footer') %>

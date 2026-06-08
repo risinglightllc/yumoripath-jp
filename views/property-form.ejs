@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-en="Property Inquiry — Yumori Path" data-ja="物件について相談 — 湯守道">物件について相談 — 湯守道</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Noto+Serif+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/theme.css">
+  <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="/static/favicon/favicon-192x192.png">
+  <link rel="apple-touch-icon" href="/static/favicon/apple-touch-icon.png">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <div class="navbar-brand">
+        <a href="/" style="display:flex;align-items:center;gap:10px;text-decoration:none;">
+          <span class="navbar-brand-jp" data-en="Yumori Path">湯守道</span>
+          <span class="navbar-brand-en" data-en="Restoration. Respect. Renewal.">YUMORI PATH</span>
+        </a>
+      </div>
+      <ul class="navbar-nav">
+        <li><a href="/#what" data-en="Services">サービス</a></li>
+        <li><a href="/#pricing" data-en="Pricing">料金</a></li>
+        <li><a href="/clergy-form" data-en="Register as Clergy">宗教者として登録</a></li>
+        <li>
+          <button class="lang-toggle" id="langToggle" aria-label="Toggle language">
+            <span class="lang-jp">JP</span><span class="lang-sep">/</span><span class="lang-en">EN</span>
+          </button>
+        </li>
+        <li><a href="/" class="navbar-cta" data-en="Home">TOPへ戻る</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main style="padding-top:64px;">
+    <section class="form-section">
+      <div class="container">
+        <div class="form-card">
+          <p class="overline" style="color:var(--color-gold);" data-en="Property Inquiry Form" data-ja="物件相談フォーム">物件相談フォーム</p>
+          <h2 data-en="Submit a Property Inquiry" data-ja="物件について相談する">物件について相談する</h2>
+          <p class="form-sub" data-en="Tell us about the property and your needs. We'll review your submission and begin coordinating with local clergy." data-ja="物件の状況とご希望をお聞かせください。内容を拝見した上で、地域の宗教者との調整支援を開始します。">物件の状況とご希望をお聞かせください。内容を拝見した上で、地域の宗教者との調整支援を開始します。</p>
+          <p class="invitation-note" data-ja="パートナー登録は現在、直接対応のみとなっております。" data-en="Partner registration is currently handled through direct coordination.">パートナー登録は現在、直接対応のみとなっております。</p>
+
+          <!-- Form -->
+          <form id="propertyForm" action="/property-form" method="POST" novalidate>
+            <div class="form-grid">
+              <div class="form-group">
+                <label data-en="Company Name" data-ja="会社名">会社名 <span class="req">*</span></label>
+                <input type="text" name="company_name" required data-placeholder-en="e.g. Yamada Real Estate Co., Ltd." data-placeholder-ja="例：（株）山田不動産" placeholder="例：（株）山田不動産">
+              </div>
+              <div class="form-group">
+                <label data-en="Contact Person" data-ja="担当者名">担当者名 <span class="req">*</span></label>
+                <input type="text" name="contact_person" required data-placeholder-en="e.g. Taro Yamada" data-placeholder-ja="例：山田 太郎" placeholder="例：山田 太郎">
+              </div>
+              <div class="form-group">
+                <label data-en="Position / Title" data-ja="役職">役職</label>
+                <input type="text" name="role" data-placeholder-en="e.g. Sales Manager, Director" data-placeholder-ja="例：営業部長、取締役" placeholder="例：営業部長、取締役">
+              </div>
+              <div class="form-group">
+                <label data-en="Email Address" data-ja="メールアドレス">メールアドレス <span class="req">*</span></label>
+                <input type="email" name="email" required data-placeholder-en="e.g. yamada@example.co.jp" data-placeholder-ja="例：yamada@example.co.jp" placeholder="例：yamada@example.co.jp">
+              </div>
+              <div class="form-group">
+                <label data-en="Phone Number" data-ja="電話番号">電話番号</label>
+                <input type="tel" name="phone" data-placeholder-en="e.g. 03-1234-5678" data-placeholder-ja="例：03-1234-5678" placeholder="例：03-1234-5678">
+              </div>
+              <div class="form-group">
+                <label data-en="Prefecture" data-ja="都道府県">都道府県 <span class="req">*</span></label>
+                <select name="prefecture" required>
+                  <option value="" data-en="Please select" data-ja="選択してください">選択してください</option>
+                  <option>北海道</option><option>青森</option><option>岩手</option><option>宮城</option><option>秋田</option><option>山形</option><option>福島</option>
+                  <option>茨城</option><option>栃木</option><option>群馬</option><option>埼玉</option><option>千葉</option><option>東京</option><option>神奈川</option>
+                  <option>新潟</option><option>富山</option><option>石川</option><option>福井</option><option>山梨</option><option>長野</option>
+                  <option>岐阜</option><option>静岡</option><option>愛知</option><option>三重</option>
+                  <option>滋賀</option><option>京都</option><option>大阪</option><option>兵庫</option><option>奈良</option><option>和歌山</option>
+                  <option>鳥取</option><option>島根</option><option>岡山</option><option>広島</option><option>山口</option>
+                  <option>徳島</option><option>香川</option><option>愛媛</option><option>高知</option>
+                  <option>福岡</option><option>佐賀</option><option>長崎</option><option>熊本</option><option>大分</option><option>宮崎</option><option>鹿児島</option><option>沖縄</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label data-en="City / District" data-ja="市区町村">市区町村</label>
+                <input type="text" name="municipality" data-placeholder-en="e.g. Shibuya-ku, Chitose City" data-placeholder-ja="例：渋谷区、千歳市" placeholder="例：渋谷区、千歳市">
+              </div>
+              <div class="form-group">
+                <label data-en="Property Type" data-ja="物件種別">物件種別 <span class="req">*</span></label>
+                <select name="property_type" required>
+                  <option value="" data-en="Please select" data-ja="選択してください">選択してください</option>
+                  <option data-en="Detached House" data-ja="一戸建て">一戸建て</option>
+                  <option data-en="Apartment / Condo" data-ja="マンション">マンション</option>
+                  <option data-en="Commercial Unit" data-ja="店舗・事業用">店舗・事業用</option>
+                  <option data-en="Land" data-ja="土地">土地</option>
+                  <option data-en="Retail / Commercial" data-ja="店舗・事業用">店舗・事業用</option>
+                  <option data-en="Other" data-ja="その他">その他</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label data-en="Relationship to Property" data-ja="物件との関係">物件との関係</label>
+                <input type="text" name="relationship_to_property" data-placeholder-en="e.g. Ownership, Property management contract" data-placeholder-ja="例：所有権、管理委託" placeholder="例：所有権、管理委託">
+              </div>
+              <div class="form-group">
+                <label data-en="Current Status" data-ja="現在の状況">現在の状況</label>
+                <select name="current_status">
+                  <option value="" data-en="Please select" data-ja="選択してください">選択してください</option>
+                  <option data-en="Currently owned" data-ja="物件所有中">物件所有中</option>
+                  <option data-en="Listed for sale" data-ja="販売中">販売中</option>
+                  <option data-en="Listed for rent" data-ja="賃貸中">賃貸中</option>
+                  <option data-en="Vacant / Abandoned" data-ja="空室・空き家">空室・空き家</option>
+                  <option data-en="Planned for disposal" data-ja="近いうちに処分予定">近いうちに処分予定</option>
+                  <option data-en="Other" data-ja="その他">その他</option>
+                </select>
+              </div>
+              <div class="form-group full">
+                <label data-en="Type of Concern" data-ja="心配の種類">心配の種類 <span class="req">*</span></label>
+                <select name="concern_category" required>
+                  <option value="" data-en="Please select" data-ja="選択してください">選択してください</option>
+                  <option data-en="Stigmatized Property (事故物件)" data-ja="事故物件">事故物件</option>
+                  <option data-en="Problem Property (訳あり物件)" data-ja="訳あり物件">訳あり物件</option>
+                  <option data-en="Vacant / Abandoned Property" data-ja="空き家">空き家</option>
+                  <option data-en="Lonely Death Related" data-ja="孤独死関連">孤独死関連</option>
+                  <option data-en="Suicide Related" data-ja="自殺関連">自殺関連</option>
+                  <option data-en="Criminal Incident Related" data-ja="事件関連">事件関連</option>
+                  <option data-en="Long-term Vacancy" data-ja="長期空室">長期空室</option>
+                  <option data-en="Other" data-ja="その他">その他</option>
+                </select>
+              </div>
+              <div class="form-group full">
+                <label data-en="Desired Service" data-ja="ご希望サービス">ご希望サービス <span class="req">*</span></label>
+                <select name="desired_service" required>
+                  <option value="" data-en="Please select" data-ja="選択してください">選択してください</option>
+                  <option data-en="Memorial Rite (慰霊)" data-ja="慰霊">慰霊</option>
+                  <option data-en="Purification Ritual (お祓い)" data-ja="お祓い">お祓い</option>
+                  <option data-en="Cleansing Rite (清祓)" data-ja="清祓">清祓</option>
+                  <option data-en="Shrine Prayer (御祈祷)" data-ja="御祈祷">御祈祷</option>
+                  <option data-en="On-site Inspection" data-ja="現地確認">現地確認</option>
+                  <option data-en="Cleaning / Restoration Consultation" data-ja="清掃・原状回復相談">清掃・原状回復相談</option>
+                  <option data-en="New Tenant / Pre-rental Restoration Consultation" data-ja="入居前リノベーション相談">入居前リノベーション相談</option>
+                  <option data-en="Undecided / Want to consult" data-ja="未定・相談したい">未定・相談したい</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label data-en="Preferred Timeline" data-ja="ご希望時期">ご希望時期</label>
+                <select name="timeline">
+                  <option value="" data-en="Please select" data-ja="選択してください">選択してください</option>
+                  <option data-en="Urgent (within 1 week)" data-ja="至急（1週間以内）">至急（1週間以内）</option>
+                  <option data-en="Within 2 weeks" data-ja="2週間以内">2週間以内</option>
+                  <option data-en="Within 1 month" data-ja="1ヶ月以内">1ヶ月以内</option>
+                  <option data-en="Flexible" data-ja="柔軟に対応可能">柔軟に対応可能</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label data-en="Property Details / Additional Information" data-ja="物件の詳細・補足情報">物件の詳細・補足情報</label>
+                <textarea name="notes" data-placeholder-en="Please include any other details about the property or situation." data-placeholder-ja="その他の状況、備考などがあればご記入ください。" placeholder="その他の状況、備考などがあればご記入ください。"></textarea>
+                <small class="warn" data-en="⚠ Please be careful not to include personal or confidential information." data-ja="※個人情報・機密情報を含む場合は十分ご注意ください">※個人情報・機密情報を含む場合は十分ご注意ください</small>
+              </div>
+              <div class="form-group full" style="margin-top:8px;">
+                <div class="form-check">
+                  <input type="checkbox" name="permission_to_contact" id="ptc" value="yes">
+                  <label for="ptc" data-en="Permission to contact — May we reach out to you directly?" data-ja="ご連絡の許可 — 担当者があってもよろしいですか？">ご連絡の許可 — 担当者があってもよろしいですか？</label>
+                </div>
+              </div>
+              <div class="form-group full">
+                <div class="form-check">
+                  <input type="checkbox" name="consent" id="consent" required value="yes">
+                  <label for="consent"><span class="req">*</span> <span data-en="I agree to the Privacy Policy and Terms of Service" data-ja="プライバシーポリシー・利用規約に同意します">プライバシーポリシー・利用規約に同意します</span><span class="req">*</span></label>
+                </div>
+              </div>
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="btn-submit" id="submitBtn" data-en="Submit Inquiry" data-ja="相談を送信する">相談を送信する</button>
+            </div>
+          </form>
+
+          <!-- Success -->
+          <div class="form-success" id="formSuccess">
+            <div class="form-success-icon">✓</div>
+            <h3 data-en="Inquiry Received" data-ja="相談を受け付けました">相談を受け付けました</h3>
+            <p data-en="We have reviewed your submission. A representative will contact you within 2–3 business days. A confirmation email will be sent to the address you provided." data-ja="物件の内容を確認しました。担当者より2〜3日以内にご連絡いたします。 本サイトからの確認メールは、ご登録のメールアドレスに送られます。">物件の内容を確認しました。担当者より2〜3日以内にご連絡いたします。<br>本サイトからの確認メールは、ご登録のメールアドレスに送られます。</p>
+            <div class="form-success-actions">
+              <a href="/" class="btn-primary" style="font-size:0.85rem;" data-en="Return Home" data-ja="TOPに戻る">TOPに戻る</a>
+              <a href="/property-form" class="btn-secondary" style="font-size:0.85rem;border-color:var(--color-indigo);color:var(--color-indigo);" data-en="Submit Another Inquiry" data-ja="別の物件を相談する">別の物件を相談する</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom" style="border:none;padding-top:0;">
+        <span>© 2026 Yumori Path.</span>
+        <div class="footer-bottom-links">
+          <a href="/privacy">プライバシーポリシー</a>
+          <a href="/terms">利用規約</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Language Toggle -->
+  <script>
+  (function() {
+    var toggle = document.getElementById('langToggle');
+    var isEnglish = localStorage.getItem('yumori-lang') === 'en';
+    document.querySelectorAll('[data-en]').forEach(function(el) {
+      if (!el.hasAttribute('data-ja')) el.setAttribute('data-ja', el.textContent.trim());
+    });
+    function applyLanguage(en) {
+      document.documentElement.lang = en ? 'en' : 'ja';
+      document.body.setAttribute('data-lang', en ? 'en' : 'ja');
+      document.querySelectorAll('[data-en]').forEach(function(el) {
+        el.textContent = en ? el.getAttribute('data-en') : el.getAttribute('data-ja');
+      });
+      document.querySelectorAll('[data-placeholder-en]').forEach(function(el) {
+        el.placeholder = en ? el.getAttribute('data-placeholder-en') : el.getAttribute('data-placeholder-ja');
+      });
+    }
+    applyLanguage(isEnglish);
+    if (toggle) {
+      toggle.classList.toggle('active', isEnglish);
+      toggle.addEventListener('click', function() {
+        isEnglish = !isEnglish;
+        localStorage.setItem('yumori-lang', isEnglish ? 'en' : 'ja');
+        toggle.classList.toggle('active', isEnglish);
+        applyLanguage(isEnglish);
+      });
+    }
+  })();
+  </script>
+
+  <script>
+    document.getElementById('propertyForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const btn = document.getElementById('submitBtn');
+      btn.disabled = true;
+      const isEn = document.body.getAttribute('data-lang') === 'en';
+      btn.textContent = isEn ? 'Submitting...' : '送信中...';
+
+      const form = e.target;
+      const formData = new FormData(form);
+      const body = {};
+      for (const [k, v] of formData.entries()) {
+        if (body[k] !== undefined) {
+          if (Array.isArray(body[k])) body[k].push(v);
+          else body[k] = [body[k], v];
+        } else {
+          body[k] = v;
+        }
+      }
+
+      try {
+        const res = await fetch('/property-form', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+        });
+
+        if (res.ok || res.redirected) {
+          form.style.display = 'none';
+          document.getElementById('formSuccess').classList.add('show');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+          const data = await res.json();
+          alert(data.error || (isEn ? 'An error occurred. Please try again.' : 'エラーが発生しました。もう一度お試しください。'));
+          btn.disabled = false;
+          btn.textContent = isEn ? 'Submit Inquiry' : '相談を送信する';
+        }
+      } catch(err) {
+        alert(isEn ? 'An error occurred. Please try again.' : 'エラーが発生しました。もう一度お試しください。');
+        btn.disabled = false;
+        btn.textContent = isEn ? 'Submit Inquiry' : '相談を送信する';
+      }
+    });
+  </script>
+</body>
+</html>

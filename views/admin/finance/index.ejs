@@ -1,0 +1,43 @@
+<%- include('../admin_partials/header', { currentPath: '/admin/finance', pageTitle: 'Finance' }) %>
+<div class="topbar"><h1>Finance</h1><a href="/admin/finance/new" class="btn btn-primary">+ New Payment</a></div>
+<% if (summary.length > 0) { %>
+<div class="finance-row">
+  <% summary.forEach(s => { %>
+  <div class="fin-item">
+    <div class="amt">¥<%= parseInt(s.total_amount || 0).toLocaleString() %></div>
+    <div class="lbl"><%= s.payment_status %> (<%= s.count %>)</div>
+  </div>
+  <% }) %>
+</div>
+<% } %>
+<div class="card">
+  <div class="card-title">Filters</div>
+  <form class="filter-bar" method="GET" action="/admin/finance">
+    <select name="payment_status"><option value="">All Statuses</option><% PAYMENT_STATUSES.forEach(s => { %><option value="<%= s %>" <%= filters.payment_status === s ? 'selected' : '' %>><%= s %></option><% }) %></select>
+    <button type="submit" class="btn btn-secondary">Filter</button><a href="/admin/finance" class="btn btn-secondary">Clear</a>
+  </form>
+</div>
+<div class="card">
+  <% if (payments.length === 0) { %><div class="empty">No payments recorded — <a href="/admin/finance/new">add one</a></div>
+  <% } else { %>
+  <table>
+    <thead><tr><th>ID</th><th>Client / Case</th><th>Fee Type</th><th>Amount</th><th>Status</th><th>Date</th><th></th></tr></thead>
+    <tbody>
+      <% payments.forEach(p => { %>
+        <tr>
+          <td>#<%= p.id %></td>
+          <td><strong><%= p.client_name || '—' %></strong><% if (p.case_id) { %> <span style="font-size:11px;color:var(--muted)">Case #<%= p.case_id %></span><% } %></td>
+          <td><%= p.fee_type || '—' %></td>
+          <td><strong>¥<%= parseFloat(p.quoted_amount || 0).toLocaleString() %></strong></td>
+          <td><span class="badge badge-<%= p.payment_status === 'final_paid' ? 'success' : p.payment_status === 'deposit_paid' ? 'matching' : p.payment_status === 'unpaid' ? 'danger' : p.payment_status === 'pending' ? 'warning' : 'muted' %>"><%= p.payment_status %></span></td>
+          <td><%= p.payment_date || '—' %></td>
+          <td><a href="/admin/finance/<%= p.id %>">View →</a></td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table><% } %>
+</div>
+<div style="background:#fef3c7;border:1px solid #fcd34d;border-radius:8px;padding:16px;margin-top:8px;font-size:13px;color:#92400e">
+  <strong>⚠ Stripe Integration: Placeholder only.</strong> Do not activate live payments — connect Stripe via the Polsia dashboard when ready.
+</div>
+<%- include('../admin_partials/footer') %>

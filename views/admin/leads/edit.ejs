@@ -1,0 +1,29 @@
+<%- include('../admin_partials/header', { currentPath: '/admin/leads', pageTitle: 'Edit Lead' }) %>
+<div class="topbar"><h1>Edit Lead</h1><a href="/admin/leads/<%= l.id %>" class="btn btn-secondary">← Back</a></div>
+<% if (typeof error \!== 'undefined' && error) { %><div class="err"><%= error %></div><% } %>
+<div class="card">
+  <form method="POST" action="/admin/leads/<%= l.id %>">
+    <div class="three-col">
+      <div class="form-group"><label>Company Name</label><input type="text" name="company_name" value="<%= l.company_name || '' %>" required></div>
+      <div class="form-group"><label>Website</label><input type="url" name="website" value="<%= l.website || '' %>"></div>
+      <div class="form-group"><label>Contact Email</label><input type="email" name="contact_email" value="<%= l.contact_email || '' %>"></div>
+    </div>
+    <div class="three-col">
+      <div class="form-group"><label>Phone</label><input type="text" name="phone" value="<%= l.phone || '' %>"></div>
+      <div class="form-group"><label>Prefecture</label><input type="text" name="prefecture" value="<%= l.prefecture || '' %>"></div>
+      <div class="form-group"><label>Municipality</label><input type="text" name="municipality" value="<%= l.municipality || '' %>"></div>
+    </div>
+    <div class="three-col">
+      <div class="form-group"><label>Specialty Tags</label><input type="text" name="specialty_tags" value="<%= l.specialty_tags || '' %>"></div>
+      <div class="form-group"><label>Jiko Relevance</label><select name="jiko_relevance"><% JIKO_RELEVANCES.forEach(s => { %><option value="<%= s %>" <%= l.jiko_relevance === s ? 'selected' : '' %>><%= s %></option><% }) %></select></div>
+      <div class="form-group"><label>Outreach Status</label><select name="outreach_status"><% OUTREACH_STATUSES.forEach(s => { %><option value="<%= s %>" <%= l.outreach_status === s ? 'selected' : '' %>><%= s %></option><% }) %></select></div>
+    </div>
+    <div class="three-col">
+      <div class="form-group"><label>Confidence Score</label><input type="number" name="confidence_score" value="<%= l.confidence_score || 50 %>" min="1" max="100"></div>
+      <div class="form-group"><label>Last Contacted</label><input type="date" name="last_contacted_date" value="<%= l.last_contacted_date || '' %>"></div>
+    </div>
+    <div class="form-group"><label>Notes</label><textarea name="notes"><%= l.notes || '' %></textarea></div>
+    <div class="actions"><button type="submit" class="btn btn-primary">Save Changes</button></div>
+  </form>
+</div>
+<%- include('../admin_partials/footer') %>

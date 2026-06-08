@@ -1,0 +1,26 @@
+<%- include('../admin_partials/header', { currentPath: '/admin/leads', pageTitle: 'Add Lead' }) %>
+<div class="topbar"><h1>Add Real Estate Lead</h1><a href="/admin/leads" class="btn btn-secondary">← Back</a></div>
+<% if (typeof error \!== 'undefined' && error) { %><div class="err"><%= error %></div><% } %>
+<div class="card">
+  <form method="POST" action="/admin/leads">
+    <div class="three-col">
+      <div class="form-group"><label>Company Name</label><input type="text" name="company_name" required></div>
+      <div class="form-group"><label>Website</label><input type="url" name="website" placeholder="https://..."></div>
+      <div class="form-group"><label>Contact Email</label><input type="email" name="contact_email"></div>
+    </div>
+    <div class="three-col">
+      <div class="form-group"><label>Phone</label><input type="text" name="phone"></div>
+      <div class="form-group"><label>Prefecture</label><input type="text" name="prefecture" placeholder="例: 東京都"></div>
+      <div class="form-group"><label>Municipality</label><input type="text" name="municipality"></div>
+    </div>
+    <div class="three-col">
+      <div class="form-group"><label>Specialty Tags</label><input type="text" name="specialty_tags" placeholder="jiko bukken, akiya, etc."></div>
+      <div class="form-group"><label>Jiko Relevance</label><select name="jiko_relevance"><% JIKO_RELEVANCES.forEach(s => { %><option value="<%= s %>" <%= s === 'medium' ? 'selected' : '' %>><%= s %></option><% }) %></select></div>
+      <div class="form-group"><label>Confidence Score (1-100)</label><input type="number" name="confidence_score" value="50" min="1" max="100"></div>
+    </div>
+    <div class="form-group"><label>Source URL</label><input type="url" name="source_url" placeholder="Where you found this lead"></div>
+    <div class="form-group"><label>Notes</label><textarea name="notes"></textarea></div>
+    <div class="actions"><button type="submit" class="btn btn-primary">Add Lead</button></div>
+  </form>
+</div>
+<%- include('../admin_partials/footer') %>

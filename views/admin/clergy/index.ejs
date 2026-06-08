@@ -1,0 +1,32 @@
+<%- include('../admin_partials/header', { currentPath: '/admin/clergy', pageTitle: 'Clergy Partners' }) %>
+<div class="topbar"><h1>Clergy Partners</h1><a href="/admin/clergy/new" class="btn btn-primary">+ Add Partner</a></div>
+<div class="card">
+  <div class="card-title">Filters</div>
+  <form class="filter-bar" method="GET" action="/admin/clergy">
+    <select name="registration_status"><option value="">All Status</option><% REGISTRATION_STATUSES.forEach(s => { %><option value="<%= s %>" <%= filters.registration_status === s ? 'selected' : '' %>><%= s %></option><% }) %></select>
+    <input type="text" name="prefecture" placeholder="Prefecture" value="<%= filters.prefecture || '' %>">
+    <label style="display:flex;align-items:center;gap:4px;font-size:13px"><input type="checkbox" name="accepts_real_estate" <%= filters.accepts_real_estate ? 'checked' : '' %>> Accepts Real Estate</label>
+    <button type="submit" class="btn btn-secondary">Filter</button><a href="/admin/clergy" class="btn btn-secondary">Clear</a>
+  </form>
+</div>
+<div class="card">
+  <% if (clergy.length === 0) { %><div class="empty">No partners found — <a href="/admin/clergy/new">add one</a></div>
+  <% } else { %>
+  <table>
+    <thead><tr><th>Organization</th><th>Tradition</th><th>Prefecture</th><th>Services</th><th>Status</th><th>Real Estate</th><th></th></tr></thead>
+    <tbody>
+      <% clergy.forEach(c => { %>
+        <tr>
+          <td><strong><%= c.temple_shrine_org_name || '—' %></strong><br><span style="font-size:11px;color:var(--muted)"><%= c.contact_person || '—' %></span></td>
+          <td><%= c.religious_tradition || '—' %></td>
+          <td><%= c.prefecture || '—' %></td>
+          <td><span style="font-size:12px;color:var(--muted)"><%= (c.services_offered || '').substring(0,40) %><%= (c.services_offered || '').length > 40 ? '...' : '' %></span></td>
+          <td><span class="badge badge-<%= c.registration_status === 'active' ? 'success' : c.registration_status === 'approved' ? 'matching' : 'pending' %>"><%= c.registration_status %></span></td>
+          <td><% if (c.accepts_real_estate_cases) { %><span class="badge badge-success">Yes</span><% } else { %><span class="badge badge-muted">No</span><% } %></td>
+          <td><a href="/admin/clergy/<%= c.id %>">View →</a></td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table><% } %>
+</div>
+<%- include('../admin_partials/footer') %>

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-en="Clergy Registration — Yumori Path" data-ja="宗教者として登録 — 湯守道">宗教者として登録 — 湯守道</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Noto+Serif+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/theme.css">
+  <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="/static/favicon/favicon-192x192.png">
+  <link rel="apple-touch-icon" href="/static/favicon/apple-touch-icon.png">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <div class="navbar-brand">
+        <a href="/" style="display:flex;align-items:center;gap:10px;text-decoration:none;">
+          <span class="navbar-brand-jp" data-en="Yumori Path">湯守道</span>
+          <span class="navbar-brand-en" data-en="Restoration. Respect. Renewal.">YUMORI PATH</span>
+        </a>
+      </div>
+      <ul class="navbar-nav">
+        <li><a href="/#what" data-en="Services">サービス</a></li>
+        <li><a href="/#pricing" data-en="Pricing">料金</a></li>
+        <li><a href="/property-form" data-en="Property Inquiry">物件を相談する</a></li>
+        <li>
+          <button class="lang-toggle" id="langToggle" aria-label="Toggle language">
+            <span class="lang-jp">JP</span><span class="lang-sep">/</span><span class="lang-en">EN</span>
+          </button>
+        </li>
+        <li><a href="/" class="navbar-cta" data-en="Home">TOPへ戻る</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main style="padding-top:64px;">
+    <section class="form-section form-section-alt">
+      <div class="container">
+        <div class="form-card">
+          <p class="overline" style="color:var(--color-gold);" data-en="Clergy Registration Form" data-ja="宗教者登録フォーム">宗教者登録フォーム</p>
+          <h2 data-en="Register as Temple, Shrine, or Clergy" data-ja="寺社・宗教者として登録する">寺社・宗教者として登録する</h2>
+          <p class="form-sub" data-en="If you are interested in contributing to your community through property restoration work, please register below. We will review your submission and contact you within 2–3 business days." data-ja="地域貢献の形として、訳あり物件への対応に興味をお持ちいただけたら、以下よりご登録ください。内容確認後、担当者よりご連絡いたします。">地域貢献の形として、訳あり物件への対応に興味をお持ちいただけたら、以下よりご登録ください。内容確認後、担当者よりご連絡いたします。</p>
+
+          <!-- Form -->
+          <form id="clergyForm" action="/clergy-form" method="POST" novalidate>
+            <div class="form-grid">
+              <div class="form-group full">
+                <label data-en="Temple / Shrine / Organization Name" data-ja="寺院・神社・組織名">寺院・神社・組織名 <span class="req">*</span></label>
+                <input type="text" name="temple_shrine_org_name" required data-placeholder-en="e.g. Soto Zen Temple ○○, Shrine ○○" data-placeholder-ja="例：○○寺、○○神社" placeholder="例：○○寺、○○神社">
+              </div>
+              <div class="form-group">
+                <label data-en="Religious Tradition" data-ja="宗教流派">宗教流派 <span class="req">*</span></label>
+                <select name="religious_tradition" required>
+                  <option value="" data-en="Please select" data-ja="選択してください">選択してください</option>
+                  <option data-en="Buddhism" data-ja="仏教">仏教</option>
+                  <option data-en="Shinto" data-ja="神道">神道</option>
+                  <option data-en="Christianity" data-ja="キリスト教">キリスト教</option>
+                  <option data-en="Other" data-ja="その他">その他</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label data-en="Denomination / Sect" data-ja="宗派">宗派</label>
+                <input type="text" name="denomination" data-placeholder-en="e.g. Soto-shu, Tendai-shu, Jinja Honcho" data-placeholder-ja="例：真言宗、天台宗、神社本庁" placeholder="例：真言宗、天台宗、神社本庁">
+              </div>
+              <div class="form-group">
+                <label data-en="Contact Person" data-ja="担当者名">担当者名 <span class="req">*</span></label>
+                <input type="text" name="contact_person" required data-placeholder-en="e.g. Makoto Sato" data-placeholder-ja="例：佐藤 誠" placeholder="例：佐藤 誠">
+              </div>
+              <div class="form-group">
+                <label data-en="Role / Title" data-ja="ご役割">ご役割</label>
+                <input type="text" name="role" data-placeholder-en="e.g. Head priest, Shinto priest, Religious counselor" data-placeholder-ja="例：住職、神主、宗教カウンセラー" placeholder="例：住職、神主、宗教カウンセラー">
+              </div>
+              <div class="form-group">
+                <label data-en="Email Address" data-ja="メールアドレス">メールアドレス <span class="req">*</span></label>
+                <input type="email" name="email" required data-placeholder-en="e.g. sato@example.temple.jp" data-placeholder-ja="例：sato@example.temple.jp" placeholder="例：sato@example.temple.jp">
+              </div>
+              <div class="form-group">
+                <label data-en="Phone Number" data-ja="電話番号">電話番号</label>
+                <input type="tel" name="phone" data-placeholder-en="e.g. 075-123-4567" data-placeholder-ja="例：075-123-4567" placeholder="例：075-123-4567">
+              </div>
+              <div class="form-group">
+                <label data-en="Prefecture" data-ja="都道府県">都道府県 <span class="req">*</span></label>
+                <select name="prefecture" required>
+                  <option value="" data-en="Please select" data-ja="選択してください">選択してください</option>
+                  <option>北海道</option><option>青森</option><option>岩手</option><option>宮城</option><option>秋田</option><option>山形</option><option>福島</option>
+                  <option>茨城</option><option>栃木</option><option>群馬</option><option>埼玉</option><option>千葉</option><option>東京</option><option>神奈川</option>
+                  <option>新潟</option><option>富山</option><option>石川</option><option>福井</option><option>山梨</option><option>長野</option>
+                  <option>岐阜</option><option>静岡</option><option>愛知</option><option>三重</option>
+                  <option>滋賀</option><option>京都</option><option>大阪</option><option>兵庫</option><option>奈良</option><option>和歌山</option>
+                  <option>鳥取</option><option>島根</option><option>岡山</option><option>広島</option><option>山口</option>
+                  <option>徳島</option><option>香川</option><option>愛媛</option><option>高知</option>
+                  <option>福岡</option><option>佐賀</option><option>長崎</option><option>熊本</option><option>大分</option><option>宮崎</option><option>鹿児島</option><option>沖縄</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label data-en="City / District" data-ja="市区町村">市区町村</label>
+                <input type="text" name="municipality" data-placeholder-en="e.g. Nakagyo-ku Kyoto, Kasuga-ku" data-placeholder-ja="例：京都市中区、糟西区" placeholder="例：京都市中区、糟西区">
+              </div>
+              <div class="form-group full">
+                <label data-en="Service Area" data-ja="サービス対応可能な範囲">サービス対応可能な範囲</label>
+                <input type="text" name="service_area" data-placeholder-en="e.g. All of Kyoto Prefecture, central Osaka area" data-placeholder-ja="例：京都府全域、大阪市中心部" placeholder="例：京都府全域、大阪市中心部">
+              </div>
+              <div class="form-group full">
+                <label data-en="Available Ceremonies / Services" data-ja="対応可能な儀式・サービス">対応可能な儀式・サービス</label>
+                <select name="services_offered" required>
+                  <option value="" data-en="Please select" data-ja="選択してください">選択してください</option>
+                  <option data-en="Memorial Rite (慰霊)" data-ja="慰霊">慰霊</option>
+                  <option data-en="Purification Ritual (お祓い)" data-ja="お祓い">お祓い</option>
+                  <option data-en="Cleansing Rite (清祓)" data-ja="清祓">清祓</option>
+                  <option data-en="Shrine Prayer (御祈祷)" data-ja="御祈祷">御祈祷</option>
+                  <option data-en="On-site Visit" data-ja="現地訪問">現地訪問</option>
+                  <option data-en="Memorial Service (法要)" data-ja="法要">法要</option>
+                  <option data-en="Counseling" data-ja="相談対応">相談対応</option>
+                  <option data-en="Other" data-ja="その他">その他</option>
+                </select>
+              </div>
+              <div class="form-group full">
+                <label data-en="Interest in Real Estate Cases" data-ja="不動産案件への対応意思">不動産案件への対応意思 <span class="req">*</span></label>
+                <select name="accepts_real_estate_cases" required>
+                  <option value="" data-en="Please select" data-ja="選択してください">選択してください</option>
+                  <option value="yes" data-en="Available — eager to take on cases">対応可能・積極的に取り組みたい</option>
+                  <option value="maybe" data-en="May be available in some cases">場合により対応可能</option>
+                  <option value="no" data-en="Not available at this time">今は対応難しい</option>
+                </select>
+              </div>
+              <div class="form-group full">
+                <label data-en="Approach / Notes" data-ja="ご対応方法・特徴についての備考">ご対応方法・特徴についての備考</label>
+                <textarea name="notes" data-placeholder-en="Your approach to ritual services, how to reach you, any other preferences or notes." data-placeholder-ja="宗派的対応への考え、地域との連絡方法、ご要望など" placeholder="宗派的対応への考え、地域との連絡方法、ご要望など"></textarea>
+              </div>
+              <div class="form-group full">
+                <div class="form-check">
+                  <input type="checkbox" name="consent" id="consent" required value="yes">
+                  <label for="consent"><span class="req">*</span> <span data-en="I agree to the Privacy Policy and Terms of Service" data-ja="プライバシーポリシー・利用規約に同意します">プライバシーポリシー・利用規約に同意します</span><span class="req">*</span></label>
+                </div>
+              </div>
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="btn-submit" id="submitBtn" data-en="Register" data-ja="登録する">登録する</button>
+            </div>
+          </form>
+
+          <!-- Success -->
+          <div class="form-success" id="formSuccess">
+            <div class="form-success-icon">✓</div>
+            <h3 data-en="Registration Received" data-ja="登録を受け付けました">登録を受け付けました</h3>
+            <p data-en="Thank you for registering. We will review your submission and contact you within 2–3 business days. A confirmation email will be sent to the address you provided." data-ja="ご登録ありがとうございます。内容を確認した後、担当者より2〜3日以内にご連絡いたします。 本サイトからの確認メールは、ご登録のメールアドレスに送られます。">ご登録ありがとうございます。内容を確認した後、担当者より2〜3日以内にご連絡いたします。<br>本サイトからの確認メールは、ご登録のメールアドレスに送られます。</p>
+            <div class="form-success-actions">
+              <a href="/" class="btn-primary" style="font-size:0.85rem;" data-en="Return Home" data-ja="TOPに戻る">TOPに戻る</a>
+              <a href="/clergy-form" class="btn-secondary" style="font-size:0.85rem;border-color:var(--color-indigo);color:var(--color-indigo);" data-en="Submit Another Registration" data-ja="別の登録をする">別の登録をする</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom" style="border:none;padding-top:0;">
+        <span>© 2026 Yumori Path.</span>
+        <div class="footer-bottom-links">
+          <a href="/privacy">プライバシーポリシー</a>
+          <a href="/terms">利用規約</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Language Toggle -->
+  <script>
+  (function() {
+    var toggle = document.getElementById('langToggle');
+    var isEnglish = localStorage.getItem('yumori-lang') === 'en';
+    document.querySelectorAll('[data-en]').forEach(function(el) {
+      if (!el.hasAttribute('data-ja')) el.setAttribute('data-ja', el.textContent.trim());
+    });
+    function applyLanguage(en) {
+      document.documentElement.lang = en ? 'en' : 'ja';
+      document.body.setAttribute('data-lang', en ? 'en' : 'ja');
+      document.querySelectorAll('[data-en]').forEach(function(el) {
+        el.textContent = en ? el.getAttribute('data-en') : el.getAttribute('data-ja');
+      });
+      document.querySelectorAll('[data-placeholder-en]').forEach(function(el) {
+        el.placeholder = en ? el.getAttribute('data-placeholder-en') : el.getAttribute('data-placeholder-ja');
+      });
+    }
+    applyLanguage(isEnglish);
+    if (toggle) {
+      toggle.classList.toggle('active', isEnglish);
+      toggle.addEventListener('click', function() {
+        isEnglish = !isEnglish;
+        localStorage.setItem('yumori-lang', isEnglish ? 'en' : 'ja');
+        toggle.classList.toggle('active', isEnglish);
+        applyLanguage(isEnglish);
+      });
+    }
+  })();
+  </script>
+
+  <script>
+    document.getElementById('clergyForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const btn = document.getElementById('submitBtn');
+      btn.disabled = true;
+      const isEn = document.body.getAttribute('data-lang') === 'en';
+      btn.textContent = isEn ? 'Submitting...' : '送信中...';
+
+      const form = e.target;
+      const formData = new FormData(form);
+      const body = {};
+      for (const [k, v] of formData.entries()) {
+        if (body[k] !== undefined) {
+          if (Array.isArray(body[k])) body[k].push(v);
+          else body[k] = [body[k], v];
+        } else {
+          body[k] = v;
+        }
+      }
+
+      try {
+        const res = await fetch('/clergy-form', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+        });
+
+        if (res.ok || res.redirected) {
+          form.style.display = 'none';
+          document.getElementById('formSuccess').classList.add('show');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+          const data = await res.json();
+          alert(data.error || (isEn ? 'An error occurred. Please try again.' : 'エラーが発生しました。もう一度お試しください。'));
+          btn.disabled = false;
+          btn.textContent = isEn ? 'Register' : '登録する';
+        }
+      } catch(err) {
+        alert(isEn ? 'An error occurred. Please try again.' : 'エラーが発生しました。もう一度お試しください。');
+        btn.disabled = false;
+        btn.textContent = isEn ? 'Register' : '登録する';
+      }
+    });
+  </script>
+</body>
+</html>

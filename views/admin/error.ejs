@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Error — 湯守道 Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --bg: #faf8f5; --text: #2c2c2c; --text-muted: #7a7368; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Noto Sans JP', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+    .error-box { text-align: center; }
+    .error-code { font-size: 72px; font-weight: 700; color: #e8e2d9; line-height: 1; }
+    .error-msg { font-size: 20px; margin: 16px 0 24px; }
+    a { color: #8b6e4e; }
+  </style>
+</head>
+<body>
+  <div class="error-box">
+    <div class="error-code">404</div>
+    <div class="error-msg"><%= message || 'Page not found' %></div>
+    <a href="/admin">← Back to Dashboard</a>
+  </div>
+</body>
+</html>

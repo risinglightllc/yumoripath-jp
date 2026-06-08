@@ -1,0 +1,16 @@
+<%- include('../admin_partials/header', { currentPath: '/admin/clergy', pageTitle: c.temple_shrine_org_name }) %>
+<div class="topbar"><h1><%= c.temple_shrine_org_name || 'Partner' %></h1><div style="display:flex;gap:8px"><a href="/admin/clergy/<%= c.id %>/edit" class="btn btn-secondary">Edit</a><a href="/admin/clergy" class="btn btn-secondary">← Back</a></div></div>
+<div class="card"><div class="card-title">Details</div>
+  <div class="detail-row"><span class="detail-lbl">Tradition</span><span class="detail-val"><%= c.religious_tradition || '—' %> · <%= c.denomination || '—' %></span></div>
+  <div class="detail-row"><span class="detail-lbl">Contact</span><span class="detail-val"><%= c.contact_person || '—' %> · <%= c.email || '—' %> · <%= c.phone || '—' %></span></div>
+  <div class="detail-row"><span class="detail-lbl">Location</span><span class="detail-val"><%= c.prefecture || '—' %> <%= c.municipality || '' %> · Service area: <%= c.service_area || '—' %></span></div>
+  <div class="detail-row"><span class="detail-lbl">Services</span><span class="detail-val"><%= c.services_offered || '—' %></span></div>
+  <div class="detail-row"><span class="detail-lbl">Registration</span><span class="detail-val"><span class="badge badge-<%= c.registration_status === 'active' ? 'success' : c.registration_status === 'approved' ? 'matching' : 'pending' %>"><%= c.registration_status %></span></span></div>
+  <div class="detail-row"><span class="detail-lbl">Real Estate Cases</span><span class="detail-val"><% if (c.accepts_real_estate_cases) { %><span class="badge badge-success">Accepts</span><% } else { %><span class="badge badge-muted">Does not accept</span><% } %></span></div>
+  <div class="detail-row"><span class="detail-lbl">Consent Recorded</span><span class="detail-val"><% if (c.consent_recorded) { %><span class="badge badge-success">Yes</span><% } else { %><span class="badge badge-muted">No</span><% } %></span></div>
+  <div class="detail-row"><span class="detail-lbl">Confidence Score</span><span class="detail-val"><span class="badge badge-<%= c.confidence_score >= 80 ? 'success' : c.confidence_score >= 50 ? 'warning' : 'muted' %>"><%= c.confidence_score %></span></span></div>
+  <div class="detail-row"><span class="detail-lbl">Outreach Status</span><span class="detail-val"><span class="badge badge-<%= c.outreach_status === 'converted' ? 'success' : c.outreach_status === 'interested' ? 'matching' : c.outreach_status === 'contacted' ? 'review' : 'muted' %>"><%= c.outreach_status %></span></span></div>
+  <% if (c.public_source_url) { %><div class="detail-row"><span class="detail-lbl">Source</span><span class="detail-val"><a href="<%= c.public_source_url %>" target="_blank"><%= c.public_source_url %></a></span></div><% } %>
+  <% if (c.notes) { %><div class="detail-row" style="flex-direction:column;gap:4px"><span class="detail-lbl">Notes</span><span class="detail-val" style="white-space:pre-wrap"><%= c.notes %></span></div><% } %>
+</div>
+<%- include('../admin_partials/footer') %>
