@@ -12,7 +12,4 @@
   <% if (p.notes) { %><div class="detail-row" style="flex-direction:column;gap:4px"><span class="detail-lbl">Notes</span><span class="detail-val" style="white-space:pre-wrap"><%= p.notes %></span></div><% } %>
   <div class="detail-row"><span class="detail-lbl">Created</span><span class="detail-val"><%= p.created_at ? new Date(p.created_at).toLocaleString('ja-JP') : '—' %></span></div>
 </div>
-<div style="background:#fef3c7;border:1px solid #fcd34d;border-radius:8px;padding:16px;font-size:13px;color:#92400e;margin-top:8px">
-  <strong>⚠ Stripe Integration: Placeholder only.</strong> To collect payment, use the Polsia dashboard to create a Stripe payment link.
-</div>
 <%- include('../../admin_partials/footer') %>

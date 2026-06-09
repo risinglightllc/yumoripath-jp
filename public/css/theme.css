@@ -458,7 +458,7 @@ h4, h5, h6 { font-family: var(--font-sans); font-weight: 500; }
 .footer-bottom-links a { color: rgba(255,255,255,0.25); margin-left: 24px; transition: color 0.2s; }
 .footer-bottom-links a:hover { color: rgba(255,255,255,0.6); }
 
-/* --- Forms --- */
+/* --- フォーム --- */
 .form-section { padding: 96px 0; background: var(--color-cream); }
 .form-section-alt { background: var(--color-warm-white); }
 .form-card {
