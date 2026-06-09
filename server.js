@@ -67,4 +67,55 @@ process.on('uncaughtException', (err) => {
   console.error('[Server] Uncaught exception:', err.message);
 });
 
-app.listen(port, () => console.log(`[YUMORI] Server running on port ${port}`));
+// Run migrations on startup, then start server
+const { Pool: MigratePool } = require('pg');
+const fs = require('fs');
+
+async function runStartupMigrations() {
+  const migPool = new MigratePool({
+    connectionString: process.env.DATABASE_URL,
+    ssl: process.env.DATABASE_URL?.includes('localhost') ? false : { rejectUnauthorized: false }
+  });
+  const client = await migPool.connect();
+  try {
+    await client.query(`CREATE TABLE IF NOT EXISTS _migrations (id SERIAL PRIMARY KEY, name VARCHAR(255) NOT NULL UNIQUE, applied_at TIMESTAMPTZ DEFAULT NOW())`);
+    const dir = path.join(__dirname, 'migrations');
+    if (fs.existsSync(dir)) {
+      const files = fs.readdirSync(dir).filter(f => f.endsWith('.js') || f.endsWith('.sql')).sort();
+      const applied = await client.query('SELECT name FROM _migrations');
+      const appliedNames = new Set(applied.rows.map(r => r.name));
+      for (const file of files) {
+        if (appliedNames.has(file)) continue;
+        console.log(`[YUMORI] Running migration: ${file}`);
+        await client.query('BEGIN');
+        try {
+          if (file.endsWith('.sql')) {
+            const sql = fs.readFileSync(path.join(dir, file), 'utf8');
+            await client.query(sql);
+          } else {
+            const migration = require(path.join(dir, file));
+            await (migration.up || migration)(client);
+          }
+          await client.query('INSERT INTO _migrations (name) VALUES ($1)', [file]);
+          await client.query('COMMIT');
+          console.log(`[YUMORI] Migration complete: ${file}`);
+        } catch (err) {
+          await client.query('ROLLBACK');
+          console.error(`[YUMORI] Migration failed (${file}):`, err.message);
+        }
+      }
+    }
+  } catch (err) {
+    console.error('[YUMORI] Migration startup error (non-fatal):', err.message);
+  } finally {
+    client.release();
+    await migPool.end();
+  }
+}
+
+runStartupMigrations().then(() => {
+  app.listen(port, () => console.log(`[YUMORI] Server running on port ${port}`));
+}).catch((err) => {
+  console.error('[YUMORI] Startup migration failed, starting anyway:', err.message);
+  app.listen(port, () => console.log(`[YUMORI] Server running on port ${port}`));
+});
