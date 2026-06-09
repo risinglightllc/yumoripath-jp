@@ -49,4 +49,22 @@ app.use('/admin/outreach',requireAuth, require('./routes/outreach'));
 app.use('/admin/finance',   requireAuth, require('./routes/finance'));
 app.use('/admin/portfolio', requireAuth, require('./routes/portfolio'));
 
+// Global error handler — prevents crashes
+app.use((err, req, res, _next) => {
+  console.error('[Server] Unhandled error:', err.message);
+  if (req.path.startsWith('/admin')) {
+    return res.status(500).render('admin/error', { message: 'Something went wrong. Please try again.' });
+  }
+  res.status(500).json({ error: 'Internal server error' });
+});
+
+// Prevent unhandled promise rejections from crashing the process
+process.on('unhandledRejection', (reason) => {
+  console.error('[Server] Unhandled rejection (non-fatal):', reason && reason.message || reason);
+});
+
+process.on('uncaughtException', (err) => {
+  console.error('[Server] Uncaught exception:', err.message);
+});
+
 app.listen(port, () => console.log(`[YUMORI] Server running on port ${port}`));
