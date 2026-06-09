@@ -1,123 +1,127 @@
-<%- include('layout', { body: `
-<div class="page-header">
+<%- include('../admin_partials/header', { currentPath: '/admin', pageTitle: 'Dashboard' }) %>
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
   <h1>Dashboard</h1>
   <a href="/admin/cases/new" class="btn btn-primary">+ New Case</a>
 </div>
-
 <div class="stat-grid">
   <div class="stat-card">
-    <div class="label">Total Cases</div>
-    <div class="value">${totalCases}</div>
+    <div class="lbl">Total Cases</div>
+    <div class="val"><%= totalCases %></div>
     <div class="sub">All time</div>
   </div>
   <div class="stat-card">
-    <div class="label">Active Cases</div>
-    <div class="value">${activeCases}</div>
+    <div class="lbl">Active Cases</div>
+    <div class="val"><%= activeCases %></div>
     <div class="sub">In pipeline</div>
   </div>
   <div class="stat-card">
-    <div class="label">Real Estate Leads</div>
-    <div class="value">${totalLeads}</div>
+    <div class="lbl">Real Estate Leads</div>
+    <div class="val"><%= totalLeads %></div>
     <div class="sub">All time</div>
   </div>
   <div class="stat-card">
-    <div class="label">Pending Outreach</div>
-    <div class="value">${pendingOutreach}</div>
+    <div class="lbl">Pending Outreach</div>
+    <div class="val"><%= pendingOutreach %></div>
     <div class="sub">Awaiting response</div>
   </div>
   <div class="stat-card">
-    <div class="label">Clergy Partners</div>
-    <div class="value">${recentClergy.length > 0 ? '5+' : '0'}</div>
+    <div class="lbl">Clergy Partners</div>
+    <div class="val"><%= recentClergy.length > 0 ? '5+' : '0' %></div>
     <div class="sub">Active network</div>
   </div>
 </div>
-
 <div class="card">
-  <div class="card-header">Case Pipeline — Status Breakdown</div>
+  <div class="section-title">Case Pipeline — Status Breakdown</div>
   <table>
     <thead><tr><th>Status</th><th>Count</th><th></th></tr></thead>
     <tbody>
-      ${statusCounts.map(r => `
+      <% statusCounts.forEach(function(r) { %>
         <tr>
-          <td><span class="badge badge-${r.status === 'New submission' ? 'new' : r.status === 'Needs review' ? 'review' : r.status === 'Priest/clergy matching' ? 'matching' : r.status === 'Ceremony scheduled' ? 'scheduled' : r.status === 'Completed' ? 'completed' : 'muted'}">${r.status}</span></td>
-          <td><strong>${r.count}</strong></td>
-          <td><a href="/admin/cases?status=${encodeURIComponent(r.status)}">View →</a></td>
+          <td><span class="badge badge-<%= r.status === 'New submission' ? 'new' : r.status === 'Needs review' ? 'review' : r.status === 'Priest/clergy matching' ? 'matching' : r.status === 'Ceremony scheduled' ? 'scheduled' : r.status === 'Completed' ? 'completed' : 'muted' %>"><%= r.status %></span></td>
+          <td><strong><%= r.count %></strong></td>
+          <td><a href="/admin/cases?status=<%= encodeURIComponent(r.status) %>">View →</a></td>
         </tr>
-      `).join('')}
+      <% }); %>
     </tbody>
   </table>
 </div>
-
 <div class="two-col">
   <div class="card">
-    <div class="card-header">Recent Submissions</div>
-    ${recentCases.length === 0 ? '<div class="empty-state">No cases yet</div>' : `
+    <div class="section-title">Recent Submissions</div>
+    <% if (recentCases.length === 0) { %>
+      <div class="empty">No cases yet</div>
+    <% } else { %>
     <table>
       <thead><tr><th>Company</th><th>Prefecture</th><th>Status</th><th></th></tr></thead>
       <tbody>
-        ${recentCases.map(c => `
+        <% recentCases.forEach(function(c) { %>
           <tr>
-            <td>${c.company_name || '—'}</td>
-            <td>${c.prefecture || '—'}</td>
-            <td><span class="badge badge-${c.status === 'New submission' ? 'new' : c.status === 'Needs review' ? 'review' : 'muted'}">${c.status}</span></td>
-            <td><a href="/admin/cases/${c.case_id}">View →</a></td>
+            <td><%= c.company_name || '—' %></td>
+            <td><%= c.prefecture || '—' %></td>
+            <td><span class="badge badge-<%= c.status === 'New submission' ? 'new' : c.status === 'Needs review' ? 'review' : 'muted' %>"><%= c.status %></span></td>
+            <td><a href="/admin/cases/<%= c.case_id %>">View →</a></td>
           </tr>
-        `).join('')}
+        <% }); %>
       </tbody>
     </table>
-    `}
+    <% } %>
   </div>
   <div class="card">
-    <div class="card-header">High-Jiko Real Estate Leads</div>
-    ${recentLeads.length === 0 ? '<div class="empty-state">No high-relevance leads</div>' : `
+    <div class="section-title">High-Jiko Real Estate Leads</div>
+    <% if (recentLeads.length === 0) { %>
+      <div class="empty">No high-relevance leads</div>
+    <% } else { %>
     <table>
       <thead><tr><th>Company</th><th>Prefecture</th><th>Score</th><th></th></tr></thead>
       <tbody>
-        ${recentLeads.map(l => `
+        <% recentLeads.forEach(function(l) { %>
           <tr>
-            <td>${l.company_name || '—'}</td>
-            <td>${l.prefecture || '—'}</td>
-            <td><span class="badge badge-danger">${l.confidence_score}</span></td>
-            <td><a href="/admin/leads/${l.id}">View →</a></td>
+            <td><%= l.company_name || '—' %></td>
+            <td><%= l.prefecture || '—' %></td>
+            <td><span class="badge badge-danger"><%= l.confidence_score %></span></td>
+            <td><a href="/admin/leads/<%= l.id %>">View →</a></td>
           </tr>
-        `).join('')}
+        <% }); %>
       </tbody>
     </table>
-    `}
+    <% } %>
   </div>
 </div>
-
 <div class="two-col">
   <div class="card">
-    <div class="card-header">Tasks Due Soon</div>
-    ${overdueTasks.length === 0 ? '<div class="empty-state">No overdue tasks</div>' : `
+    <div class="section-title">Tasks Due Soon</div>
+    <% if (overdueTasks.length === 0) { %>
+      <div class="empty">No overdue tasks</div>
+    <% } else { %>
     <ul style="list-style:none">
-      ${overdueTasks.map(t => `
+      <% overdueTasks.forEach(function(t) { %>
         <li style="padding:8px 0;border-bottom:1px solid #e8e2d9;display:flex;justify-content:space-between;align-items:center">
-          <span><strong>${t.task_name}</strong><br><span style="font-size:12px;color:#7a7368">Due ${t.due_date}</span></span>
-          <span class="badge badge-${t.priority === 'high' || t.priority === 'urgent' ? 'danger' : 'warning'}">${t.priority}</span>
+          <span><strong><%= t.task_name %></strong><br><span style="font-size:12px;color:#7a7368">Due <%= t.due_date %></span></span>
+          <span class="badge badge-<%= t.priority === 'high' || t.priority === 'urgent' ? 'danger' : 'warning' %>"><%= t.priority %></span>
         </li>
-      `).join('')}
+      <% }); %>
     </ul>
-    `}
+    <% } %>
   </div>
   <div class="card">
-    <div class="card-header">Finance Summary</div>
-    ${financeSummary.length === 0 ? '<div class="empty-state">No payments recorded</div>' : `
+    <div class="section-title">Finance Summary</div>
+    <% if (financeSummary.length === 0) { %>
+      <div class="empty">No payments recorded</div>
+    <% } else { %>
     <table>
       <thead><tr><th>Status</th><th>Count</th><th>Total (JPY)</th></tr></thead>
       <tbody>
-        ${financeSummary.map(f => `
+        <% financeSummary.forEach(function(f) { %>
           <tr>
-            <td>${f.payment_status}</td>
-            <td>${f.count}</td>
-            <td>¥${parseInt(f.total_amount).toLocaleString()}</td>
+            <td><%= f.payment_status %></td>
+            <td><%= f.count %></td>
+            <td>¥<%= parseInt(f.total_amount).toLocaleString() %></td>
           </tr>
-        `).join('')}
+        <% }); %>
       </tbody>
     </table>
-    `}
+    <% } %>
     <div style="margin-top:12px"><a href="/admin/finance" class="btn btn-secondary">View Finance →</a></div>
   </div>
 </div>
-` }) %>
+<%- include('../admin_partials/footer') %>
