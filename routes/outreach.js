@@ -6,13 +6,22 @@ const express = require('express');
 const router  = express.Router();
 const outreachDB = require('../db/outreach-log');
 
+function renderAdminError(res, message) {
+  return res.status(500).render('admin/error', { message });
+}
+
 router.get('/', async (req, res) => {
-  const filters = {};
-  if (req.query.recipient_type) filters.recipient_type = req.query.recipient_type;
-  if (req.query.response_status) filters.response_status = req.query.response_status;
-  if (req.query.overdue) filters.overdue = true;
-  const entries = await outreachDB.list(filters);
-  res.render('admin/outreach/index', { entries, filters, RESPONSE_STATUSES: outreachDB.RESPONSE_STATUSES });
+  try {
+    const filters = {};
+    if (req.query.recipient_type)   filters.recipient_type = req.query.recipient_type;
+    if (req.query.response_status)  filters.response_status = req.query.response_status;
+    if (req.query.overdue)          filters.overdue = true;
+    const entries = await outreachDB.list(filters);
+    res.render('admin/outreach/index', { entries, filters, RESPONSE_STATUSES: outreachDB.RESPONSE_STATUSES });
+  } catch (err) {
+    console.error('[Outreach] Index error:', err.message);
+    renderAdminError(res, 'Outreach log failed to load. Please try again.');
+  }
 });
 
 router.post('/', async (req, res) => {

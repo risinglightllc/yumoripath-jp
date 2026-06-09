@@ -1,6 +1,6 @@
-<%- include('../admin_partials/header', { currentPath: '/admin/clergy', pageTitle: 'Edit Partner' }) %>
+<%- include('../../admin_partials/header', { currentPath: '/admin/clergy', pageTitle: 'Edit Partner' }) %>
 <div class="topbar"><h1>Edit Partner</h1><a href="/admin/clergy/<%= c.id %>" class="btn btn-secondary">← Back</a></div>
-<% if (typeof error \!== 'undefined' && error) { %><div class="err"><%= error %></div><% } %>
+<% if (typeof error !== 'undefined' && error) { %><div class="err"><%= error %></div><% } %>
 <div class="card">
   <form method="POST" action="/admin/clergy/<%= c.id %>">
     <div class="two-col">
@@ -21,11 +21,11 @@
     </div>
     <div class="form-group"><label>Services Offered</label><input type="text" name="services_offered" value="<%= c.services_offered || '' %>"></div>
     <div class="two-col">
-      <div class="form-group"><label>Accepts Real Estate Cases</label><select name="accepts_real_estate_cases"><option value="false" <%= \!c.accepts_real_estate_cases ? 'selected' : '' %>>No</option><option value="true" <%= c.accepts_real_estate_cases ? 'selected' : '' %>>Yes</option></select></div>
+      <div class="form-group"><label>Accepts Real Estate Cases</label><select name="accepts_real_estate_cases"><option value="false" <%= !c.accepts_real_estate_cases ? 'selected' : '' %>>No</option><option value="true" <%= c.accepts_real_estate_cases ? 'selected' : '' %>>Yes</option></select></div>
       <div class="form-group"><label>Registration Status</label><select name="registration_status"><option value="pending" <%= c.registration_status === 'pending' ? 'selected' : '' %>>Pending</option><option value="approved" <%= c.registration_status === 'approved' ? 'selected' : '' %>>Approved</option><option value="active" <%= c.registration_status === 'active' ? 'selected' : '' %>>Active</option></select></div>
     </div>
     <div class="form-group"><label>Notes</label><textarea name="notes"><%= c.notes || '' %></textarea></div>
     <div class="actions"><button type="submit" class="btn btn-primary">Save Changes</button></div>
   </form>
 </div>
-<%- include('../admin_partials/footer') %>
+<%- include('../../admin_partials/footer') %>

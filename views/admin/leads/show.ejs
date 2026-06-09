@@ -1,4 +1,4 @@
-<%- include('../admin_partials/header', { currentPath: '/admin/leads', pageTitle: l.company_name }) %>
+<%- include('../../admin_partials/header', { currentPath: '/admin/leads', pageTitle: l.company_name }) %>
 <div class="topbar"><h1><%= l.company_name || 'Lead' %></h1><div style="display:flex;gap:8px"><a href="/admin/leads/<%= l.id %>/edit" class="btn btn-secondary">Edit</a><a href="/admin/leads" class="btn btn-secondary">← Back</a></div></div>
 <div class="card"><div class="card-title">Details</div>
   <div class="detail-row"><span class="detail-lbl">Website</span><span class="detail-val"><%= l.website ? '<a href="'+l.website+'" target="_blank">'+l.website+'</a>' : '—' %></span></div>
@@ -12,4 +12,4 @@
   <div class="detail-row"><span class="detail-lbl">Source</span><span class="detail-val"><%= l.source_url ? '<a href="'+l.source_url+'" target="_blank">'+l.source_url+'</a>' : '—' %></span></div>
   <% if (l.notes) { %><div class="detail-row" style="flex-direction:column;gap:4px"><span class="detail-lbl">Notes</span><span class="detail-val" style="white-space:pre-wrap"><%= l.notes %></span></div><% } %>
 </div>
-<%- include('../admin_partials/footer') %>
+<%- include('../../admin_partials/footer') %>

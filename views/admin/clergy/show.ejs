@@ -1,4 +1,4 @@
-<%- include('../admin_partials/header', { currentPath: '/admin/clergy', pageTitle: c.temple_shrine_org_name }) %>
+<%- include('../../admin_partials/header', { currentPath: '/admin/clergy', pageTitle: c.temple_shrine_org_name }) %>
 <div class="topbar"><h1><%= c.temple_shrine_org_name || 'Partner' %></h1><div style="display:flex;gap:8px"><a href="/admin/clergy/<%= c.id %>/edit" class="btn btn-secondary">Edit</a><a href="/admin/clergy" class="btn btn-secondary">← Back</a></div></div>
 <div class="card"><div class="card-title">Details</div>
   <div class="detail-row"><span class="detail-lbl">Tradition</span><span class="detail-val"><%= c.religious_tradition || '—' %> · <%= c.denomination || '—' %></span></div>
@@ -13,4 +13,4 @@
   <% if (c.public_source_url) { %><div class="detail-row"><span class="detail-lbl">Source</span><span class="detail-val"><a href="<%= c.public_source_url %>" target="_blank"><%= c.public_source_url %></a></span></div><% } %>
   <% if (c.notes) { %><div class="detail-row" style="flex-direction:column;gap:4px"><span class="detail-lbl">Notes</span><span class="detail-val" style="white-space:pre-wrap"><%= c.notes %></span></div><% } %>
 </div>
-<%- include('../admin_partials/footer') %>
+<%- include('../../admin_partials/footer') %>

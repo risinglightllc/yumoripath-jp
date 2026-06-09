@@ -1,6 +1,6 @@
-<%- include('../admin_partials/header', { currentPath: '/admin/cases', pageTitle: 'Edit Case #' + c.case_id }) %>
+<%- include('../../admin_partials/header', { currentPath: '/admin/cases', pageTitle: 'Edit Case #' + c.case_id }) %>
 <div class="topbar"><h1>Edit Case #<%= c.case_id %></h1><a href="/admin/cases/<%= c.case_id %>" class="btn btn-secondary">← Back</a></div>
-<% if (typeof error \!== 'undefined' && error) { %><div class="err"><%= error %></div><% } %>
+<% if (typeof error !== 'undefined' && error) { %><div class="err"><%= error %></div><% } %>
 <div class="card">
   <form method="POST" action="/admin/cases/<%= c.case_id %>">
     <div class="four-col">
@@ -28,4 +28,4 @@
     <div class="actions"><button type="submit" class="btn btn-primary">Save Changes</button></div>
   </form>
 </div>
-<%- include('../admin_partials/footer') %>
+<%- include('../../admin_partials/footer') %>

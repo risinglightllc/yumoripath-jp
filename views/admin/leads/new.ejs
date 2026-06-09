@@ -1,6 +1,6 @@
-<%- include('../admin_partials/header', { currentPath: '/admin/leads', pageTitle: 'Add Lead' }) %>
+<%- include('../../admin_partials/header', { currentPath: '/admin/leads', pageTitle: 'Add Lead' }) %>
 <div class="topbar"><h1>Add Real Estate Lead</h1><a href="/admin/leads" class="btn btn-secondary">← Back</a></div>
-<% if (typeof error \!== 'undefined' && error) { %><div class="err"><%= error %></div><% } %>
+<% if (typeof error !== 'undefined' && error) { %><div class="err"><%= error %></div><% } %>
 <div class="card">
   <form method="POST" action="/admin/leads">
     <div class="three-col">
@@ -23,4 +23,4 @@
     <div class="actions"><button type="submit" class="btn btn-primary">Add Lead</button></div>
   </form>
 </div>
-<%- include('../admin_partials/footer') %>
+<%- include('../../admin_partials/footer') %>

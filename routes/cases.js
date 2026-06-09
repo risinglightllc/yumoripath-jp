@@ -7,14 +7,23 @@ const router  = express.Router();
 const casesDB = require('../db/cases');
 const matchingService = require('../services/matching');
 
+function renderAdminError(res, message) {
+  return res.status(500).render('admin/error', { message });
+}
+
 router.get('/', async (req, res) => {
-  const filters = {};
-  if (req.query.status)     filters.status     = req.query.status;
-  if (req.query.prefecture) filters.prefecture  = req.query.prefecture;
-  if (req.query.limit)      filters.limit       = parseInt(req.query.limit);
-  const cases     = await casesDB.list(filters);
-  const statusCounts = await casesDB.getStatusCounts();
-  res.render('admin/cases/index', { cases, statusCounts, filters, STATUSES: casesDB.STATUSES });
+  try {
+    const filters = {};
+    if (req.query.status)     filters.status     = req.query.status;
+    if (req.query.prefecture) filters.prefecture  = req.query.prefecture;
+    if (req.query.limit)      filters.limit       = parseInt(req.query.limit);
+    const cases        = await casesDB.list(filters);
+    const statusCounts = await casesDB.getStatusCounts();
+    res.render('admin/cases/index', { cases, statusCounts, filters, STATUSES: casesDB.STATUSES });
+  } catch (err) {
+    console.error('[Cases] Index error:', err.message);
+    renderAdminError(res, 'Case pipeline failed to load. Please try again.');
+  }
 });
 
 router.get('/new', (req, res) => {
@@ -31,16 +40,26 @@ router.post('/', async (req, res) => {
 });
 
 router.get('/:id', async (req, res) => {
-  const c = await casesDB.getById(req.params.id);
-  if (!c) return res.status(404).render('admin/error', { message: 'Case not found' });
-  const matches = await matchingService.matchCase(c);
-  res.render('admin/cases/show', { c, matches });
+  try {
+    const c = await casesDB.getById(req.params.id);
+    if (!c) return res.status(404).render('admin/error', { message: 'Case not found' });
+    const matches = await matchingService.matchCase(c);
+    res.render('admin/cases/show', { c, matches });
+  } catch (err) {
+    console.error('[Cases] Show error:', err.message);
+    renderAdminError(res, 'Case details failed to load. Please try again.');
+  }
 });
 
 router.get('/:id/edit', async (req, res) => {
-  const c = await casesDB.getById(req.params.id);
-  if (!c) return res.status(404).render('admin/error', { message: 'Case not found' });
-  res.render('admin/cases/edit', { c, STATUSES: casesDB.STATUSES });
+  try {
+    const c = await casesDB.getById(req.params.id);
+    if (!c) return res.status(404).render('admin/error', { message: 'Case not found' });
+    res.render('admin/cases/edit', { c, STATUSES: casesDB.STATUSES });
+  } catch (err) {
+    console.error('[Cases] Edit error:', err.message);
+    renderAdminError(res, 'Case edit page failed to load. Please try again.');
+  }
 });
 
 router.post('/:id', async (req, res) => {
@@ -48,7 +67,7 @@ router.post('/:id', async (req, res) => {
     await casesDB.update(req.params.id, req.body);
     res.redirect(`/admin/cases/${req.params.id}`);
   } catch (err) {
-    const c = await casesDB.getById(req.params.id);
+    const c = await casesDB.getById(req.params.id).catch(() => null);
     res.status(400).render('admin/cases/edit', { c, error: err.message, STATUSES: casesDB.STATUSES });
   }
 });

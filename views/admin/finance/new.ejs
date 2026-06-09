@@ -1,6 +1,6 @@
-<%- include('../admin_partials/header', { currentPath: '/admin/finance', pageTitle: 'New Payment' }) %>
+<%- include('../../admin_partials/header', { currentPath: '/admin/finance', pageTitle: 'New Payment' }) %>
 <div class="topbar"><h1>New Payment Record</h1><a href="/admin/finance" class="btn btn-secondary">← Back</a></div>
-<% if (typeof error \!== 'undefined' && error) { %><div class="err"><%= error %></div><% } %>
+<% if (typeof error !== 'undefined' && error) { %><div class="err"><%= error %></div><% } %>
 <div class="card">
   <form method="POST" action="/admin/finance">
     <div class="two-col">
@@ -20,4 +20,4 @@
     <div class="actions"><button type="submit" class="btn btn-primary">Create Record</button></div>
   </form>
 </div>
-<%- include('../admin_partials/footer') %>
+<%- include('../../admin_partials/footer') %>

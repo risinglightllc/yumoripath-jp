@@ -6,13 +6,22 @@ const express = require('express');
 const router  = express.Router();
 const clergyDB = require('../db/clergy-partners');
 
+function renderAdminError(res, message) {
+  return res.status(500).render('admin/error', { message });
+}
+
 router.get('/', async (req, res) => {
-  const filters = {};
-  if (req.query.prefecture)          filters.prefecture          = req.query.prefecture;
-  if (req.query.registration_status) filters.registration_status = req.query.registration_status;
-  if (req.query.accepts_real_estate)  filters.accepts_real_estate_cases = true;
-  const clergy = await clergyDB.list(filters);
-  res.render('admin/clergy/index', { clergy, filters, REGISTRATION_STATUSES: clergyDB.REGISTRATION_STATUSES, OUTREACH_STATUSES: clergyDB.OUTREACH_STATUSES });
+  try {
+    const filters = {};
+    if (req.query.prefecture)           filters.prefecture          = req.query.prefecture;
+    if (req.query.registration_status)  filters.registration_status = req.query.registration_status;
+    if (req.query.accepts_real_estate)  filters.accepts_real_estate_cases = true;
+    const clergy = await clergyDB.list(filters);
+    res.render('admin/clergy/index', { clergy, filters, REGISTRATION_STATUSES: clergyDB.REGISTRATION_STATUSES, OUTREACH_STATUSES: clergyDB.OUTREACH_STATUSES });
+  } catch (err) {
+    console.error('[Clergy] Index error:', err.message);
+    renderAdminError(res, 'Clergy partners failed to load. Please try again.');
+  }
 });
 
 router.get('/new', (req, res) => {
@@ -29,15 +38,25 @@ router.post('/', async (req, res) => {
 });
 
 router.get('/:id', async (req, res) => {
-  const c = await clergyDB.getById(req.params.id);
-  if (!c) return res.status(404).render('admin/error', { message: 'Clergy partner not found' });
-  res.render('admin/clergy/show', { c });
+  try {
+    const c = await clergyDB.getById(req.params.id);
+    if (!c) return res.status(404).render('admin/error', { message: 'Clergy partner not found' });
+    res.render('admin/clergy/show', { c });
+  } catch (err) {
+    console.error('[Clergy] Show error:', err.message);
+    renderAdminError(res, 'Clergy partner details failed to load. Please try again.');
+  }
 });
 
 router.get('/:id/edit', async (req, res) => {
-  const c = await clergyDB.getById(req.params.id);
-  if (!c) return res.status(404).render('admin/error', { message: 'Clergy partner not found' });
-  res.render('admin/clergy/edit', { c });
+  try {
+    const c = await clergyDB.getById(req.params.id);
+    if (!c) return res.status(404).render('admin/error', { message: 'Clergy partner not found' });
+    res.render('admin/clergy/edit', { c });
+  } catch (err) {
+    console.error('[Clergy] Edit error:', err.message);
+    renderAdminError(res, 'Clergy partner edit page failed to load. Please try again.');
+  }
 });
 
 router.post('/:id', async (req, res) => {
@@ -45,7 +64,7 @@ router.post('/:id', async (req, res) => {
     await clergyDB.update(req.params.id, req.body);
     res.redirect(`/admin/clergy/${req.params.id}`);
   } catch (err) {
-    const c = await clergyDB.getById(req.params.id);
+    const c = await clergyDB.getById(req.params.id).catch(() => null);
     res.status(400).render('admin/clergy/edit', { c, error: err.message });
   }
 });

@@ -1,6 +1,6 @@
-<%- include('../admin_partials/header', { currentPath: '/admin/finance', pageTitle: 'Edit Payment' }) %>
+<%- include('../../admin_partials/header', { currentPath: '/admin/finance', pageTitle: 'Edit Payment' }) %>
 <div class="topbar"><h1>Edit Payment #<%= p.id %></h1><a href="/admin/finance/<%= p.id %>" class="btn btn-secondary">← Back</a></div>
-<% if (typeof error \!== 'undefined' && error) { %><div class="err"><%= error %></div><% } %>
+<% if (typeof error !== 'undefined' && error) { %><div class="err"><%= error %></div><% } %>
 <div class="card">
   <form method="POST" action="/admin/finance/<%= p.id %>">
     <div class="two-col">
@@ -19,4 +19,4 @@
     <div class="actions"><button type="submit" class="btn btn-primary">Save Changes</button></div>
   </form>
 </div>
-<%- include('../admin_partials/footer') %>
+<%- include('../../admin_partials/footer') %>

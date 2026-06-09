@@ -1,4 +1,4 @@
-<%- include('../admin_partials/header', { currentPath: '/admin/finance', pageTitle: 'Finance' }) %>
+<%- include('../../admin_partials/header', { currentPath: '/admin/finance', pageTitle: 'Finance' }) %>
 <div class="topbar"><h1>Finance</h1><a href="/admin/finance/new" class="btn btn-primary">+ New Payment</a></div>
 <% if (summary.length > 0) { %>
 <div class="finance-row">
@@ -40,4 +40,4 @@
 <div style="background:#fef3c7;border:1px solid #fcd34d;border-radius:8px;padding:16px;margin-top:8px;font-size:13px;color:#92400e">
   <strong>⚠ Stripe Integration: Placeholder only.</strong> Do not activate live payments — connect Stripe via the Polsia dashboard when ready.
 </div>
-<%- include('../admin_partials/footer') %>
+<%- include('../../admin_partials/footer') %>

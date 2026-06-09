@@ -1,6 +1,6 @@
-<%- include('../admin_partials/header', { currentPath: '/admin/outreach', pageTitle: 'Log Outreach' }) %>
+<%- include('../../admin_partials/header', { currentPath: '/admin/outreach', pageTitle: 'Log Outreach' }) %>
 <div class="topbar"><h1>Log Outreach</h1><a href="/admin/outreach" class="btn btn-secondary">← Back</a></div>
-<% if (typeof error \!== 'undefined' && error) { %><div class="err"><%= error %></div><% } %>
+<% if (typeof error !== 'undefined' && error) { %><div class="err"><%= error %></div><% } %>
 <div class="card">
   <form method="POST" action="/admin/outreach">
     <div class="two-col">
@@ -20,4 +20,4 @@
     <div class="actions"><button type="submit" class="btn btn-primary">Log Outreach</button></div>
   </form>
 </div>
-<%- include('../admin_partials/footer') %>
+<%- include('../../admin_partials/footer') %>
