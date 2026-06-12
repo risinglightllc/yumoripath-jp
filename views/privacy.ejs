@@ -48,7 +48,7 @@
             <h4 style="color:var(--color-indigo);margin:24px 0 8px;font-size:0.9rem;" data-en="4. Cookies" data-ja="4. Cookieの使用">4. Cookieの使用</h4>
             <p style="margin-bottom:16px;" data-en="This service may use cookies for access analytics. No personally identifiable information is included." data-ja="本サービスでは、アクセス解析のためにCookieを使用する場合があります。Cookieには、個人を特定する情報は含まれません。">本サービスでは、アクセス解析のためにCookieを使用する場合があります。Cookieには、個人を特定する情報は含まれません。</p>
             <h4 style="color:var(--color-indigo);margin:24px 0 8px;font-size:0.9rem;" data-en="5. Contact" data-ja="5. お問い合わせ">5. お問い合わせ</h4>
-            <p data-en="For privacy-related questions, please contact us at: admin@risinglightllc.com" data-ja="プライバシーに関するご質問は、admin@risinglightllc.com までお問い合わせください。">プライバシーに関するご質問は、admin@risinglightllc.com までお問い合わせください。</p>
+            <p data-html data-html-en="For privacy-related questions, please contact us at: <a href='mailto:info@yumoripath.jp'>info@yumoripath.jp</a>" data-html-ja="プライバシーに関するご質問は、<a href='mailto:info@yumoripath.jp'>info@yumoripath.jp</a> までお問い合わせください。" data-en="For privacy-related questions, please contact us at: info@yumoripath.jp">プライバシーに関するご質問は、<a href="mailto:info@yumoripath.jp">info@yumoripath.jp</a> までお問い合わせください。</p>
           </div>
           <div style="margin-top:40px;">
             <a href="/" class="btn-primary" style="display:inline-flex;font-size:0.85rem;" data-en="Return Home" data-ja="TOPに戻る">TOPに戻る</a>
@@ -79,7 +79,15 @@
       document.documentElement.lang = en ? 'en' : 'ja';
       document.body.setAttribute('data-lang', en ? 'en' : 'ja');
       document.querySelectorAll('[data-en]').forEach(function(el) {
-        el.textContent = en ? el.getAttribute('data-en') : el.getAttribute('data-ja');
+        if (el.tagName === 'META') {
+          el.setAttribute('content', en ? el.getAttribute('data-en') : el.getAttribute('data-ja'));
+        } else if (el.tagName === 'TITLE') {
+          el.textContent = en ? el.getAttribute('data-en') : el.getAttribute('data-ja');
+        } else if (el.hasAttribute('data-html') || el.hasAttribute('data-html-en')) {
+          el.innerHTML = en ? el.getAttribute('data-html-en') : el.getAttribute('data-html-ja');
+        } else {
+          el.textContent = en ? el.getAttribute('data-en') : el.getAttribute('data-ja');
+        }
       });
     }
     applyLanguage(isEnglish);

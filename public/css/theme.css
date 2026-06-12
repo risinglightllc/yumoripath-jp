@@ -435,7 +435,7 @@ h4, h5, h6 { font-family: var(--font-sans); font-weight: 500; }
 .footer { background: #0F1B36; color: rgba(255,255,255,0.55); padding: 56px 0 32px; }
 .footer-inner {
   display: grid;
-  grid-template-columns: 1.4fr 1fr 1fr;
+  grid-template-columns: 1.4fr 1fr 1fr 0.8fr;
   gap: 40px;
   margin-bottom: 40px;
 }
@@ -561,7 +561,7 @@ h4, h5, h6 { font-family: var(--font-sans); font-weight: 500; }
   .for-clergy-grid  { grid-template-columns: 1fr; }
   .pricing-grid     { grid-template-columns: 1fr; }
   .trust-grid       { grid-template-columns: repeat(2, 1fr); }
-  .footer-inner     { grid-template-columns: 1fr 1fr; }
+  .footer-inner     { grid-template-columns: 1fr 1fr 1fr; }
 }
 @media (max-width: 640px) {
   .services-grid    { grid-template-columns: 1fr; }

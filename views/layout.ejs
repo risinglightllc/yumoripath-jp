@@ -53,7 +53,7 @@
             el.setAttribute('content', en ? el.getAttribute('data-en') : el.getAttribute('data-ja'));
           } else if (el.tagName === 'TITLE') {
             el.textContent = en ? el.getAttribute('data-en') : el.getAttribute('data-ja');
-          } else if (el.hasAttribute('data-html')) {
+          } else if (el.hasAttribute('data-html') || el.hasAttribute('data-html-en')) {
             el.innerHTML = en ? el.getAttribute('data-html-en') : el.getAttribute('data-html-ja');
           } else {
             el.textContent = en ? el.getAttribute('data-en') : el.getAttribute('data-ja');
