@@ -7,10 +7,12 @@ const express = require('express');
 const router  = express.Router();
 const { createCase } = require('../db/cases');
 const { createClergyPartner } = require('../db/clergy-partners');
+const optIn = require('../db/opt-in');
 
 // GET — render form pages (EJS handles layout)
 router.get('/property-form', (_req, res) => res.render('property-form'));
 router.get('/clergy-form',    (_req, res) => res.render('clergy-form'));
+router.get('/opt-in',         (_req, res) => res.render('opt-in'));
 router.get('/privacy',        (_req, res) => res.render('privacy'));
 router.get('/terms',          (_req, res) => res.render('terms'));
 
@@ -88,6 +90,42 @@ router.post('/clergy-form', async (req, res) => {
     return res.status(200).json({ success: true, partnerId });
   } catch (err) {
     console.error('[forms] Clergy registration error:', err);
+    return res.status(500).json({ error: 'サーバーエラーが発生しました。もう一度お試しください。' });
+  }
+});
+
+// POST — opt-in form (from physical outreach QR code)
+router.post('/opt-in', async (req, res) => {
+  try {
+    const {
+      institution_name, institution_type, contact_name,
+      email, phone, website, services, message, consent
+    } = req.body;
+
+    if (!consent) {
+      return res.status(400).json({ error: '同意が必要です。' });
+    }
+
+    if (!institution_name || !institution_type || !contact_name || !email) {
+      return res.status(400).json({ error: '必須項目を入力してください。' });
+    }
+
+    const submission = await optIn.create({
+      institution_name,
+      institution_type,
+      contact_name,
+      email,
+      phone:    phone || null,
+      website:  website || null,
+      services: services || null,
+      message:  message || null,
+      consent:  true,
+    });
+
+    console.log(`[forms] Opt-in submission saved — id=${submission.id}, institution=${institution_name}`);
+    return res.status(200).json({ success: true, id: submission.id });
+  } catch (err) {
+    console.error('[forms] Opt-in submission error:', err);
     return res.status(500).json({ error: 'サーバーエラーが発生しました。もう一度お試しください。' });
   }
 });
