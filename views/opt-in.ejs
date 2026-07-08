@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>掲載申込フォーム — 湯守道</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Noto+Serif+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon/favicon-16x16.png">
+  <link rel="apple-touch-icon" href="/static/favicon/apple-touch-icon.png">
+  <style>
+    :root {
+      --color-indigo: #1D2B5E;
+      --color-indigo-mid: #2A4070;
+      --color-indigo-pale: #EBEEF7;
+      --color-gold: #B89A6A;
+      --color-gold-light: #D4BC93;
+      --color-cream: #FAF7F2;
+      --color-warm-white: #FFFDF8;
+      --color-stone: #6E6657;
+      --color-stone-light: #C8C0B4;
+      --color-text-dark: #1A1714;
+      --color-text-mid: #4A453F;
+      --color-text-light: #8A8075;
+      --font-sans: 'Noto Sans JP', sans-serif;
+      --font-serif: 'Noto Serif JP', serif;
+      --radius-sm: 4px;
+      --radius-md: 8px;
+      --radius-lg: 16px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body {
+      font-family: var(--font-sans);
+      background: var(--color-warm-white);
+      color: var(--color-text-dark);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    /* Header */
+    .header {
+      background: rgba(29, 43, 94, 0.97);
+      backdrop-filter: blur(8px);
+      padding: 16px 24px;
+      text-align: center;
+    }
+    .header-brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+    .header-jp {
+      font-family: var(--font-serif);
+      font-size: 1.3rem;
+      color: #fff;
+      letter-spacing: 0.05em;
+    }
+    .header-en {
+      font-size: 0.7rem;
+      color: var(--color-gold-light);
+      letter-spacing: 0.08em;
+      border-left: 1px solid rgba(255,255,255,0.2);
+      padding-left: 12px;
+    }
+
+    /* Main */
+    main {
+      flex: 1;
+      padding: 48px 24px 64px;
+    }
+    .container {
+      width: 100%;
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    /* Page header */
+    .page-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .page-header-kanji {
+      font-family: var(--font-serif);
+      font-size: 2.4rem;
+      color: var(--color-indigo);
+      letter-spacing: 0.1em;
+      margin-bottom: 4px;
+      font-weight: 400;
+    }
+    .page-header-en {
+      font-size: 0.8rem;
+      color: var(--color-gold);
+      letter-spacing: 0.12em;
+      margin-bottom: 24px;
+    }
+    .page-header h1 {
+      font-family: var(--font-serif);
+      font-size: 1.4rem;
+      color: var(--color-indigo);
+      font-weight: 400;
+      margin-bottom: 20px;
+    }
+    .page-header p {
+      font-size: 0.875rem;
+      color: var(--color-text-mid);
+      line-height: 1.8;
+      max-width: 560px;
+      margin: 0 auto;
+    }
+    .page-header .free-badge {
+      display: inline-block;
+      background: var(--color-indigo-pale);
+      color: var(--color-indigo);
+      font-size: 0.75rem;
+      font-weight: 500;
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-top: 12px;
+      letter-spacing: 0.02em;
+    }
+
+    /* Form card */
+    .form-card {
+      background: #fff;
+      border-radius: var(--radius-lg);
+      padding: 48px 40px;
+      box-shadow: 0 4px 24px rgba(29,43,94,0.07);
+      border: 1px solid var(--color-stone-light);
+    }
+    .form-section-title {
+      font-family: var(--font-serif);
+      font-size: 0.9rem;
+      color: var(--color-indigo);
+      font-weight: 400;
+      margin-bottom: 20px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--color-indigo-pale);
+    }
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px 24px;
+      margin-bottom: 32px;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .form-group.full { grid-column: 1 / -1; }
+    .form-group label {
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--color-text-mid);
+      letter-spacing: 0.02em;
+    }
+    .form-group label .req {
+      color: var(--color-gold);
+      margin-left: 2px;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      padding: 10px 14px;
+      border: 1px solid var(--color-stone-light);
+      border-radius: var(--radius-sm);
+      font-size: 0.875rem;
+      font-family: var(--font-sans);
+      color: var(--color-text-dark);
+      background: var(--color-warm-white);
+      transition: border-color 0.2s;
+      width: 100%;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--color-indigo);
+    }
+    .form-group textarea {
+      resize: vertical;
+      min-height: 96px;
+    }
+
+    /* Checkboxes group */
+    .checkbox-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 4px;
+    }
+    .checkbox-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.84rem;
+      color: var(--color-text-mid);
+    }
+    .checkbox-item input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      accent-color: var(--color-indigo);
+      flex-shrink: 0;
+    }
+    .checkbox-item .other-text {
+      flex: 1;
+      padding: 6px 10px;
+      border: 1px solid var(--color-stone-light);
+      border-radius: var(--radius-sm);
+      font-size: 0.8rem;
+      font-family: var(--font-sans);
+      color: var(--color-text-dark);
+      background: var(--color-warm-white);
+      margin-left: 4px;
+    }
+    .checkbox-item .other-text:focus {
+      outline: none;
+      border-color: var(--color-indigo);
+    }
+
+    /* Consent */
+    .consent-group {
+      margin-top: 28px;
+      padding: 20px;
+      background: var(--color-cream);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--color-stone-light);
+    }
+    .consent-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 0.82rem;
+      color: var(--color-text-mid);
+      line-height: 1.6;
+    }
+    .consent-item input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--color-indigo);
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    /* Submit */
+    .form-actions {
+      display: flex;
+      justify-content: center;
+      margin-top: 36px;
+    }
+    .btn-submit {
+      background: var(--color-indigo);
+      color: #fff;
+      font-size: 0.95rem;
+      font-weight: 500;
+      padding: 14px 48px;
+      border: none;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-family: var(--font-sans);
+      transition: background 0.2s, transform 0.1s;
+      letter-spacing: 0.05em;
+    }
+    .btn-submit:hover { background: var(--color-indigo-mid); }
+    .btn-submit:active { transform: scale(0.98); }
+    .btn-submit:disabled { background: var(--color-stone-light); cursor: not-allowed; }
+
+    /* Success */
+    .form-success {
+      display: none;
+      text-align: center;
+      padding: 56px 24px;
+    }
+    .form-success.show { display: block; }
+    .form-success-icon {
+      width: 72px;
+      height: 72px;
+      background: var(--color-indigo-pale);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+      font-size: 1.8rem;
+      color: var(--color-indigo);
+    }
+    .form-success h3 {
+      font-family: var(--font-serif);
+      font-size: 1.4rem;
+      color: var(--color-indigo);
+      margin-bottom: 16px;
+      font-weight: 400;
+    }
+    .form-success p {
+      color: var(--color-text-mid);
+      font-size: 0.875rem;
+      line-height: 1.8;
+    }
+    .form-success .back-link {
+      display: inline-block;
+      margin-top: 28px;
+      color: var(--color-indigo);
+      font-size: 0.85rem;
+      border-bottom: 1px solid var(--color-indigo-pale);
+      padding-bottom: 2px;
+      transition: border-color 0.2s;
+    }
+    .form-success .back-link:hover {
+      border-color: var(--color-indigo);
+    }
+
+    /* Footer */
+    .footer {
+      background: #0F1B36;
+      color: rgba(255,255,255,0.55);
+      padding: 28px 24px;
+      text-align: center;
+      font-size: 0.72rem;
+    }
+    .footer a {
+      color: rgba(255,255,255,0.45);
+      margin: 0 12px;
+      transition: color 0.2s;
+    }
+    .footer a:hover { color: rgba(255,255,255,0.8); }
+
+    /* Error */
+    .field-error {
+      font-size: 0.72rem;
+      color: #c0392b;
+      margin-top: 2px;
+      display: none;
+    }
+    .form-group.has-error input,
+    .form-group.has-error select {
+      border-color: #c0392b;
+    }
+    .form-group.has-error .field-error {
+      display: block;
+    }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      .form-grid { grid-template-columns: 1fr; }
+      .form-card { padding: 32px 20px; }
+      .page-header-kanji { font-size: 2rem; }
+      main { padding: 32px 16px 48px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <a href="https://yumoripath.jp" class="header-brand">
+      <span class="header-jp">湯守道</span>
+      <span class="header-en">YUMORI PATH</span>
+    </a>
+  </header>
+
+  <main>
+    <div class="container">
+      <div class="page-header">
+        <div class="page-header-kanji">湯守道</div>
+        <div class="page-header-en">YUMORI PATH</div>
+        <h1>掲載申込フォーム</h1>
+        <p>湯守道は、日本の神社・寺院・教会を世界中の方々にご紹介するバイリンガルのディレクトリサイトです。掲載は完全無料です。以下のフォームにご記入いただくだけで、ご登録いただけます。</p>
+        <span class="free-badge">掲載無料</span>
+      </div>
+
+      <div class="form-card">
+        <!-- Form -->
+        <form id="optInForm" novalidate>
+          <!-- Institution Info -->
+          <h3 class="form-section-title">施設情報</h3>
+          <div class="form-grid">
+            <div class="form-group full">
+              <label>施設名 <span class="req">*</span></label>
+              <input type="text" name="institution_name" required placeholder="例：○○神社、○○寺、○○教会">
+              <span class="field-error">施設名を入力してください</span>
+            </div>
+            <div class="form-group">
+              <label>種類 <span class="req">*</span></label>
+              <select name="institution_type" required>
+                <option value="">選択してください</option>
+                <option value="神社">神社</option>
+                <option value="寺院">寺院</option>
+                <option value="教会">教会</option>
+              </select>
+              <span class="field-error">種類を選択してください</span>
+            </div>
+            <div class="form-group">
+              <label>ウェブサイト</label>
+              <input type="url" name="website" placeholder="https://">
+            </div>
+          </div>
+
+          <!-- Contact Info -->
+          <h3 class="form-section-title">ご担当者情報</h3>
+          <div class="form-grid">
+            <div class="form-group">
+              <label>ご担当者名 <span class="req">*</span></label>
+              <input type="text" name="contact_name" required placeholder="例：佐藤 誠">
+              <span class="field-error">ご担当者名を入力してください</span>
+            </div>
+            <div class="form-group">
+              <label>メールアドレス <span class="req">*</span></label>
+              <input type="email" name="email" required placeholder="例：info@example.jp">
+              <span class="field-error">有効なメールアドレスを入力してください</span>
+            </div>
+            <div class="form-group">
+              <label>電話番号</label>
+              <input type="tel" name="phone" placeholder="例：075-123-4567">
+            </div>
+          </div>
+
+          <!-- Services -->
+          <h3 class="form-section-title">提供サービス</h3>
+          <div class="form-grid">
+            <div class="form-group full">
+              <label>対応可能なサービス（該当するものをすべて選択）</label>
+              <div class="checkbox-group">
+                <label class="checkbox-item">
+                  <input type="checkbox" name="services" value="厄払い・お祓い">
+                  厄払い・お祓い（Purification/Exorcism）
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" name="services" value="地鎮祭">
+                  地鎮祭（Ground-breaking ceremony）
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" name="services" value="家祈祷">
+                  家祈祷（House blessing）
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" name="services" value="供養">
+                  供養（Memorial service）
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" name="services" value="その他">
+                  その他：
+                  <input type="text" name="services_other" class="other-text" placeholder="具体的にご記入ください">
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Message -->
+          <h3 class="form-section-title">メッセージ</h3>
+          <div class="form-grid">
+            <div class="form-group full">
+              <label>メッセージ・補足事項</label>
+              <textarea name="message" placeholder="施設の特徴、ご質問、その他ご連絡事項がございましたらご記入ください。"></textarea>
+            </div>
+          </div>
+
+          <!-- Consent -->
+          <div class="consent-group">
+            <label class="consent-item">
+              <input type="checkbox" name="consent" id="consent" required value="yes">
+              <span>Yumori Pathのディレクトリに掲載されることに同意します。 <span class="req">*</span></span>
+            </label>
+          </div>
+
+          <!-- Submit -->
+          <div class="form-actions">
+            <button type="submit" class="btn-submit" id="submitBtn">送信する</button>
+          </div>
+        </form>
+
+        <!-- Success Message -->
+        <div class="form-success" id="formSuccess">
+          <div class="form-success-icon">&#10003;</div>
+          <h3>ありがとうございます</h3>
+          <p>ご登録を確認次第、ご連絡いたします。<br>確認メールは、ご入力いただいたメールアドレス宛に送信されます。</p>
+          <a href="https://yumoripath.jp" class="back-link">湯守道トップページへ戻る</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <span>&copy; 2026 Yumori Path.</span>
+    <a href="/privacy">プライバシーポリシー</a>
+    <a href="/terms">利用規約</a>
+  </footer>
+
+  <script>
+    document.getElementById('optInForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const form = e.target;
+      const btn = document.getElementById('submitBtn');
+
+      // Clear previous errors
+      form.querySelectorAll('.has-error').forEach(el => el.classList.remove('has-error'));
+
+      // Validate required fields
+      let hasError = false;
+      const requiredFields = form.querySelectorAll('[required]');
+      requiredFields.forEach(field => {
+        if (field.type === 'checkbox' && !field.checked) {
+          hasError = true;
+          field.closest('.consent-group').style.borderColor = '#c0392b';
+        } else if (field.type !== 'checkbox' && !field.value.trim()) {
+          hasError = true;
+          field.closest('.form-group').classList.add('has-error');
+        }
+      });
+
+      // Validate email format
+      const emailField = form.querySelector('[name="email"]');
+      if (emailField.value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailField.value)) {
+        hasError = true;
+        emailField.closest('.form-group').classList.add('has-error');
+      }
+
+      if (hasError) return;
+
+      // Disable button
+      btn.disabled = true;
+      btn.textContent = '送信中...';
+
+      // Collect form data
+      const formData = new FormData(form);
+      const body = {};
+      const services = [];
+      for (const [k, v] of formData.entries()) {
+        if (k === 'services') {
+          services.push(v);
+        } else {
+          body[k] = v;
+        }
+      }
+      body.services = services.join(', ');
+      if (body.services.includes('その他') && body.services_other) {
+        body.services = body.services.replace('その他', 'その他: ' + body.services_other);
+      }
+      delete body.services_other;
+
+      try {
+        const res = await fetch('/opt-in', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+        });
+
+        if (res.ok) {
+          form.style.display = 'none';
+          document.getElementById('formSuccess').classList.add('show');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+          const data = await res.json().catch(() => ({}));
+          alert(data.error || 'エラーが発生しました。もう一度お試しください。');
+          btn.disabled = false;
+          btn.textContent = '送信する';
+        }
+      } catch(err) {
+        alert('エラーが発生しました。もう一度お試しください。');
+        btn.disabled = false;
+        btn.textContent = '送信する';
+      }
+    });
+
+    // Reset consent border on check
+    document.getElementById('consent').addEventListener('change', function() {
+      if (this.checked) {
+        this.closest('.consent-group').style.borderColor = '';
+      }
+    });
+  </script>
+</body>
+</html>
