@@ -1,0 +1,160 @@
+<section class="section lookup-section" id="lookup">
+  <div class="container">
+    <div class="section-header">
+      <p class="overline" data-en="Property Search" data-ja="物件検索">物件検索</p>
+      <h2 data-html-ja="この物件について、<br>調べてみましょう。" data-html-en="Look up a property's<br>history." data-en="Look up a property history">この物件について、<br>調べてみましょう。</h2>
+      <p data-en="Enter an address to check whether the property has a known history of incidents. If it is not in our database you can submit it for review." data-ja="住所を入力して、物件に関する事故・事件の記録を確認できます。データベースにない場合は、報告として送信できます。">住所を入力して、物件に関する事故・事件の記録を確認できます。データベースにない場合は、報告として送信できます。</p>
+    </div>
+    <div class="lookup-card">
+      <div class="lookup-search">
+        <div class="lookup-input-wrap">
+          <span class="lookup-icon">📍</span>
+          <input type="text" id="lookupInput" class="lookup-input"
+            data-placeholder-ja="住所を入力（例：東京都新宿区西新宿2-8-1）"
+            data-placeholder-en="Enter address (e.g. 2-8-1 Nishishinjuku, Shinjuku, Tokyo)"
+            placeholder="住所を入力（例：東京都新宿区西新宿2-8-1）"
+            autocomplete="off">
+          <button class="lookup-btn" id="lookupBtn" data-en="Search" data-ja="検索">検索</button>
+        </div>
+        <p class="lookup-note" data-en="Search is based on our curated database of known incidents in Japan." data-ja="検索結果は、湯守道が収集した国内の事故物件情報に基づきます。">検索結果は、湯守道が収集した国内の事故物件情報に基づきます。</p>
+      </div>
+      <div class="lookup-results" id="lookupResults" style="display:none;">
+        <div class="lookup-found" id="lookupFound" style="display:none;">
+          <div class="lookup-result-header">
+            <span class="lookup-result-badge found" data-en="Known Incident Property" data-ja="事故物件として記録あり">事故物件として記録あり</span>
+          </div>
+          <div class="lookup-result-address" id="resultAddress"></div>
+          <div class="lookup-result-meta" id="resultMeta"></div>
+          <p class="lookup-cta-text" data-en="Find a verified temple or shrine near this property to perform purification or memorial rites — contact them directly." data-ja="この物件の近くにある認定寺社・宗教者を探して、お祓いや供養を直接依頼できます。">この物件の近くにある認定寺社・宗教者を探して、お祓いや供養を直接依頼できます。</p>
+          <div class="lookup-result-actions">
+            <a href="/#for-clergy" class="btn-primary" data-en="Find Nearby Clergy" data-ja="近くの寺社を探す">近くの寺社を探す</a>
+            <a href="/property-form" class="btn-secondary" data-en="Submit an Inquiry" data-ja="物件について相談する" style="margin-left:12px;">物件について相談する</a>
+          </div>
+        </div>
+        <div class="lookup-notfound" id="lookupNotFound" style="display:none;">
+          <div class="lookup-result-header">
+            <span class="lookup-result-badge notfound" data-en="Not in our database" data-ja="データベースに記録なし">データベースに記録なし</span>
+          </div>
+          <p data-en="This address is not in our current database. If you know of an incident here you can submit it for our team to review." data-ja="この住所は現在のデータベースに登録されていません。情報をお持ちの場合は報告していただけます。">この住所は現在のデータベースに登録されていません。情報をお持ちの場合は報告していただけます。</p>
+          <div class="lookup-notfound-actions" style="margin-top:16px;display:flex;gap:12px;flex-wrap:wrap;">
+            <a href="/property-form" class="btn-primary" data-en="Submit a Property Inquiry" data-ja="物件について相談する">物件について相談する</a>
+            <button class="btn-secondary" id="reportBtn" data-en="Report an Incident" data-ja="事故情報を報告する">事故情報を報告する</button>
+          </div>
+        </div>
+        <div class="lookup-report-form" id="lookupReportForm" style="display:none;margin-top:24px;padding-top:24px;border-top:1px solid var(--color-stone-light);">
+          <p class="overline" style="text-align:left;margin-bottom:12px;" data-en="Submit Incident Report" data-ja="事故情報の報告">事故情報の報告</p>
+          <div class="report-grid">
+            <div class="form-group"><label data-en="Address" data-ja="住所">住所</label><input type="text" id="reportAddress" readonly></div>
+            <div class="form-group"><label data-en="Incident Type" data-ja="事故の種別">事故の種別</label>
+              <select id="reportType">
+                <option value="">選択してください</option>
+                <option value="suicide" data-en="Suicide" data-ja="自殺・自死">自殺・自死</option>
+                <option value="murder" data-en="Murder" data-ja="殺人・他殺">殺人・他殺</option>
+                <option value="lonely_death" data-en="Unattended Death" data-ja="孤独死">孤独死</option>
+                <option value="accident" data-en="Accident" data-ja="事故死">事故死</option>
+                <option value="fire" data-en="Fire" data-ja="火災">火災</option>
+                <option value="other" data-en="Other" data-ja="その他">その他</option>
+              </select>
+            </div>
+            <div class="form-group"><label data-en="Approximate Date" data-ja="おおよその発生時期">おおよその発生時期</label><input type="month" id="reportDate"></div>
+            <div class="form-group"><label data-en="Source / Notes" data-ja="情報源・備考">情報源・備考</label><input type="text" id="reportSource"></div>
+          </div>
+          <div style="margin-top:16px;">
+            <button class="btn-submit" id="reportSubmitBtn" data-en="Submit Report" data-ja="報告を送信する">報告を送信する</button>
+            <button class="btn-secondary" id="reportCancelBtn" style="margin-left:12px;" data-en="Cancel" data-ja="キャンセル">キャンセル</button>
+          </div>
+        </div>
+      </div>
+      <div class="lookup-stats">
+        <div class="lookup-stat"><span class="lookup-stat-num" id="statProperties">—</span><span class="lookup-stat-label" data-en="Properties in database" data-ja="登録物件数">登録物件数</span></div>
+        <div class="lookup-stat-divider"></div>
+        <div class="lookup-stat"><span class="lookup-stat-num">47</span><span class="lookup-stat-label" data-en="Prefectures covered" data-ja="対応都道府県">対応都道府県</span></div>
+        <div class="lookup-stat-divider"></div>
+        <div class="lookup-stat"><span class="lookup-stat-num" id="statClergy">—</span><span class="lookup-stat-label" data-en="Registered clergy" data-ja="登録宗教者数">登録宗教者数</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+.lookup-section{background:var(--color-indigo-pale);padding:96px 0}
+.lookup-section .section-header h2{color:var(--color-indigo)}
+.lookup-card{max-width:760px;margin:0 auto;background:#fff;border-radius:var(--radius-lg);padding:48px 48px 32px;box-shadow:0 4px 32px rgba(29,43,94,0.09);border:1px solid var(--color-stone-light)}
+.lookup-input-wrap{display:flex;align-items:center;border:1.5px solid var(--color-stone-light);border-radius:var(--radius-sm);overflow:hidden;transition:border-color 0.2s;background:var(--color-warm-white)}
+.lookup-input-wrap:focus-within{border-color:var(--color-indigo)}
+.lookup-icon{padding:0 12px;font-size:1rem;color:var(--color-text-light);flex-shrink:0}
+.lookup-input{flex:1;border:none;outline:none;padding:14px 8px;font-size:0.9rem;font-family:var(--font-sans);color:var(--color-text-dark);background:transparent}
+.lookup-btn{background:var(--color-indigo);color:#fff;border:none;padding:0 28px;height:52px;font-size:0.875rem;font-weight:500;font-family:var(--font-sans);cursor:pointer;transition:background 0.2s;white-space:nowrap;flex-shrink:0}
+.lookup-btn:hover{background:var(--color-indigo-mid)}
+.lookup-note{font-size:0.72rem;color:var(--color-text-light);margin-top:10px;line-height:1.5}
+.lookup-results{margin-top:32px;padding-top:32px;border-top:1px solid var(--color-stone-light)}
+.lookup-result-badge{display:inline-block;font-size:0.72rem;font-weight:500;padding:5px 14px;border-radius:20px;margin-bottom:16px}
+.lookup-result-badge.found{background:rgba(184,154,106,0.12);color:#7A5C2E;border:1px solid rgba(184,154,106,0.3)}
+.lookup-result-badge.notfound{background:var(--color-indigo-pale);color:var(--color-indigo);border:1px solid rgba(29,43,94,0.15)}
+.lookup-result-address{font-size:1rem;font-weight:500;color:var(--color-indigo);margin-bottom:12px}
+.lookup-result-meta{display:flex;flex-wrap:wrap;gap:16px;margin-bottom:20px}
+.lookup-meta-item{font-size:0.82rem;color:var(--color-text-mid)}
+.lookup-meta-item strong{color:var(--color-text-dark)}
+.lookup-cta-text{font-size:0.875rem;color:var(--color-text-mid);margin-bottom:16px;line-height:1.7}
+.lookup-result-actions{display:flex;flex-wrap:wrap;gap:12px}
+.report-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.lookup-stats{display:flex;align-items:center;justify-content:center;margin-top:40px;padding-top:28px;border-top:1px solid var(--color-stone-light)}
+.lookup-stat{text-align:center;padding:0 32px;flex:1}
+.lookup-stat-num{display:block;font-family:var(--font-serif);font-size:1.8rem;color:var(--color-indigo);font-weight:300;margin-bottom:4px}
+.lookup-stat-label{font-size:0.72rem;color:var(--color-text-light)}
+.lookup-stat-divider{width:1px;height:40px;background:var(--color-stone-light);flex-shrink:0}
+@media(max-width:640px){.lookup-card{padding:28px 20px 24px}.report-grid{grid-template-columns:1fr}.lookup-stats{flex-direction:column;gap:20px}.lookup-stat-divider{width:40px;height:1px}.lookup-stat{padding:0}}
+</style>
+<script>
+(function(){
+  function loadStats(){
+    fetch('/api/lookup/stats').then(r=>r.ok?r.json():null).then(d=>{
+      if(!d)return;
+      if(d.properties!=null)document.getElementById('statProperties').textContent=d.properties.toLocaleString('ja-JP');
+      if(d.clergy!=null)document.getElementById('statClergy').textContent=d.clergy.toLocaleString('ja-JP');
+    }).catch(()=>{});
+  }
+  loadStats();
+  var input=document.getElementById('lookupInput'),btn=document.getElementById('lookupBtn');
+  var results=document.getElementById('lookupResults'),found=document.getElementById('lookupFound'),notfound=document.getElementById('lookupNotFound');
+  function doSearch(){
+    var q=(input.value||'').trim();if(!q){input.focus();return;}
+    btn.disabled=true;btn.textContent='…';
+    results.style.display='none';found.style.display='none';notfound.style.display='none';
+    fetch('/api/lookup/search?q='+encodeURIComponent(q)).then(r=>r.json()).then(d=>{
+      results.style.display='block';
+      if(d.found&&d.property){showFound(d.property);}else{showNotFound(q);}
+    }).catch(()=>{results.style.display='block';showNotFound(q);})
+    .finally(()=>{btn.disabled=false;btn.textContent=localStorage.getItem('yumori-lang')==='en'?'Search':'検索';});
+  }
+  function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+  function showFound(p){
+    var isEn=localStorage.getItem('yumori-lang')==='en';
+    document.getElementById('resultAddress').textContent=p.address||input.value;
+    var m=document.getElementById('resultMeta');m.innerHTML='';
+    if(p.incident_type)m.innerHTML+='<span class="lookup-meta-item">種別 <strong>'+esc(isEn?(p.incident_type_en||p.incident_type):p.incident_type)+'</strong></span>';
+    if(p.incident_date)m.innerHTML+='<span class="lookup-meta-item">発生時期 <strong>'+esc(p.incident_date)+'</strong></span>';
+    if(p.prefecture)m.innerHTML+='<span class="lookup-meta-item">所在地 <strong>'+esc(p.prefecture)+'</strong></span>';
+    found.style.display='block';
+  }
+  function showNotFound(q){
+    notfound.style.display='block';
+    var ra=document.getElementById('reportAddress');if(ra)ra.value=q;
+  }
+  btn.addEventListener('click',doSearch);
+  input.addEventListener('keydown',function(e){if(e.key==='Enter')doSearch();});
+  var reportBtn=document.getElementById('reportBtn'),reportF=document.getElementById('lookupReportForm');
+  var cancelBtn=document.getElementById('reportCancelBtn'),submitBtn=document.getElementById('reportSubmitBtn');
+  if(reportBtn)reportBtn.addEventListener('click',function(){reportF.style.display='block';reportBtn.style.display='none';});
+  if(cancelBtn)cancelBtn.addEventListener('click',function(){reportF.style.display='none';reportBtn.style.display='';});
+  if(submitBtn)submitBtn.addEventListener('click',function(){
+    var type=document.getElementById('reportType').value;
+    if(!type){alert('事故の種別を選択してください。');return;}
+    submitBtn.disabled=true;
+    fetch('/api/lookup/report',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({address:document.getElementById('reportAddress').value,type:type,date:document.getElementById('reportDate').value,source:document.getElementById('reportSource').value})
+    }).then(r=>r.json()).then(()=>{
+      reportF.innerHTML='<p style="color:var(--color-indigo);padding:16px 0;">✓ '+(localStorage.getItem('yumori-lang')==='en'?'Report submitted. Thank you.':'報告を受け付けました。ありがとうございます。')+'</p>';
+    }).catch(()=>{submitBtn.disabled=false;alert('送信に失敗しました。');});
+  });
+})();
+</script>
