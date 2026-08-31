@@ -34,6 +34,9 @@ app.get('/health', (_req, res) => res.json({ status: 'healthy' }));
 app.use(express.static(path.join(__dirname, 'public'), { index: false }));
 app.get('/', (_req, res) => res.render('layout', buildLandingContext()));
 
+// Property lookup API (public)
+app.use('/api/lookup', require('./routes/lookup'));
+
 // Public forms
 app.use(require('./routes/forms'));
 
