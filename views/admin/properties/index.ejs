@@ -1,0 +1,45 @@
+<%- include('../../admin_partials/header', { currentPath: '/admin/properties', pageTitle: 'Properties' }) %>
+
+<div class="topbar">
+  <h1>Properties</h1>
+  <a href="/admin/properties/new" class="btn btn-primary">+ New Property</a>
+</div>
+
+<div class="card">
+  <div class="card-title">Filters</div>
+  <form class="filter-bar" method="GET" action="/admin/properties">
+    <select name="verified">
+      <option value="">All</option>
+      <option value="true" <%= filters.verified === true ? 'selected' : '' %>>Verified only</option>
+      <option value="false" <%= filters.verified === false ? 'selected' : '' %>>Unverified only</option>
+    </select>
+    <input type="text" name="prefecture" placeholder="Prefecture" value="<%= filters.prefecture || '' %>">
+    <button type="submit" class="btn btn-secondary">Filter</button>
+    <a href="/admin/properties" class="btn btn-secondary">Clear</a>
+  </form>
+</div>
+
+<div class="card">
+  <% if (properties.length === 0) { %>
+    <div class="empty">No properties found — <a href="/admin/properties/new">add one</a>. Map pins on the public /map page come from rows here that have latitude/longitude and are marked verified.</div>
+  <% } else { %>
+  <table>
+    <thead><tr><th>ID</th><th>Address</th><th>Prefecture</th><th>Incident</th><th>Lat/Lng</th><th>Verified</th><th></th></tr></thead>
+    <tbody>
+      <% properties.forEach(p => { %>
+        <tr>
+          <td>#<%= p.id %></td>
+          <td><%= p.address %></td>
+          <td><%= p.prefecture || '—' %></td>
+          <td><%= p.incident_type_en || p.incident_type || '—' %></td>
+          <td><%= (p.latitude && p.longitude) ? p.latitude + ', ' + p.longitude : '—' %></td>
+          <td><span class="badge <%= p.verified ? 'badge-success' : 'badge-muted' %>"><%= p.verified ? 'Verified' : 'Unverified' %></span></td>
+          <td><a href="/admin/properties/<%= p.id %>/edit">Edit →</a></td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+  <% } %>
+</div>
+
+<%- include('../../admin_partials/footer') %>

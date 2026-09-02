@@ -17,6 +17,11 @@ pool.on('error', (err) => {
   console.error('[pg pool] idle client error (non-fatal):', err && err.message);
 });
 
+// Stripe webhook needs the raw request body for signature verification, so it
+// must be mounted with express.raw() before the global express.json() below.
+const { stripeWebhookHandler } = require('./routes/billing');
+app.post('/webhooks/stripe', express.raw({ type: 'application/json' }), stripeWebhookHandler);
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(session({
@@ -34,23 +39,31 @@ app.get('/health', (_req, res) => res.json({ status: 'healthy' }));
 app.use(express.static(path.join(__dirname, 'public'), { index: false }));
 app.get('/', (_req, res) => res.render('layout', buildLandingContext()));
 
-// Property lookup API (public)
+// Property lookup API (public single-address search + gated map bbox search)
 app.use('/api/lookup', require('./routes/lookup'));
 
 // Public forms
 app.use(require('./routes/forms'));
 
+// Customer accounts + billing (public — signup/login/subscribe pages)
+app.use(require('./routes/customer-auth'));
+app.use(require('./routes/billing'));
+
+// Paid property map (gated by requireSubscription inside routes/map.js)
+app.use('/map', require('./routes/map'));
+
 // Admin auth (public — login page)
 app.use('/admin', require('./routes/admin-auth'));
 
 // Admin protected routes
-app.use('/admin',         requireAuth, require('./routes/dashboard'));
-app.use('/admin/cases',   requireAuth, require('./routes/cases'));
-app.use('/admin/leads',   requireAuth, require('./routes/real-estate-leads'));
-app.use('/admin/clergy',  requireAuth, require('./routes/clergy'));
-app.use('/admin/outreach',requireAuth, require('./routes/outreach'));
-app.use('/admin/finance',   requireAuth, require('./routes/finance'));
-app.use('/admin/portfolio', requireAuth, require('./routes/portfolio'));
+app.use('/admin',            requireAuth, require('./routes/dashboard'));
+app.use('/admin/cases',      requireAuth, require('./routes/cases'));
+app.use('/admin/leads',      requireAuth, require('./routes/real-estate-leads'));
+app.use('/admin/clergy',     requireAuth, require('./routes/clergy'));
+app.use('/admin/outreach',   requireAuth, require('./routes/outreach'));
+app.use('/admin/finance',    requireAuth, require('./routes/finance'));
+app.use('/admin/portfolio',  requireAuth, require('./routes/portfolio'));
+app.use('/admin/properties', requireAuth, require('./routes/admin-properties'));
 
 // Global error handler — prevents crashes
 app.use((err, req, res, _next) => {

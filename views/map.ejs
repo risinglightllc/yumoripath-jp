@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-en="Property Map — Yumori Path" data-ja="物件マップ — 湯守道">物件マップ — 湯守道</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Noto+Serif+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/theme.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon/favicon-32x32.png">
+  <style>
+    body{padding-top:64px;}
+    .map-wrap{display:flex;height:calc(100vh - 64px)}
+    #propertyMap{flex:1;position:relative;z-index:1}
+    .map-sidebar{width:340px;flex-shrink:0;background:var(--color-warm-white);border-left:1px solid var(--color-stone-light);overflow-y:auto;padding:20px}
+    .map-sidebar h2{font-size:1.05rem;color:var(--color-indigo);margin-bottom:4px}
+    .map-sidebar .sub{font-size:0.78rem;color:var(--color-text-light);margin-bottom:16px;line-height:1.6}
+    .map-filter{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+    .map-filter select{flex:1;padding:8px 10px;border:1px solid var(--color-stone-light);border-radius:var(--radius-sm);font-size:0.8rem;font-family:var(--font-sans);background:#fff}
+    .search-here-btn{position:absolute;top:16px;left:50%;transform:translateX(-50%);z-index:500;background:var(--color-indigo);color:#fff;border:none;padding:10px 20px;border-radius:20px;font-size:0.82rem;font-weight:500;box-shadow:0 4px 16px rgba(0,0,0,0.25);cursor:pointer;display:none;align-items:center;gap:6px;font-family:var(--font-sans)}
+    .search-here-btn:hover{background:var(--color-indigo-mid)}
+    .map-result{border:1px solid var(--color-stone-light);border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:10px;cursor:pointer;transition:border-color 0.15s}
+    .map-result:hover{border-color:var(--color-indigo)}
+    .map-result .addr{font-size:0.82rem;font-weight:500;color:var(--color-indigo);margin-bottom:4px}
+    .map-result .meta{font-size:0.72rem;color:var(--color-text-light)}
+    .map-empty{text-align:center;color:var(--color-text-light);font-size:0.82rem;padding:32px 12px}
+    .popup-cta{font-size:0.78rem;color:var(--color-text-mid);margin-top:8px;line-height:1.6}
+    .popup-addr{font-weight:500;color:var(--color-indigo);margin-bottom:4px}
+    .popup-meta{font-size:0.75rem;color:var(--color-text-light);margin-bottom:6px}
+    @media(max-width:800px){.map-wrap{flex-direction:column}.map-sidebar{width:100%;height:240px}}
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <div class="navbar-brand">
+        <a href="/" style="display:flex;align-items:center;gap:10px;text-decoration:none;">
+          <span class="navbar-brand-jp" data-en="Yumori Path">湯守道</span>
+          <span class="navbar-brand-en" data-en="Restoration. Respect. Renewal.">YUMORI PATH</span>
+        </a>
+      </div>
+      <ul class="navbar-nav">
+        <li><a href="/" data-en="Home">TOPへ戻る</a></li>
+        <li>
+          <button class="lang-toggle" id="langToggle" aria-label="Toggle language">
+            <span class="lang-jp">JP</span><span class="lang-sep">/</span><span class="lang-en">EN</span>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="map-wrap">
+    <div id="propertyMap">
+      <button class="search-here-btn" id="searchHereBtn">
+        🔍 <span data-en="Search Here" data-ja="この範囲で検索">この範囲で検索</span>
+      </button>
+    </div>
+    <aside class="map-sidebar">
+      <h2 data-en="Property Search" data-ja="物件検索">物件検索</h2>
+      <p class="sub" data-en="Pan or zoom the map, then Search Here to see stigmatized properties in that area." data-ja="地図を動かしてから「この範囲で検索」を押すと、その地域の事故物件が表示されます。">地図を動かしてから「この範囲で検索」を押すと、その地域の事故物件が表示されます。</p>
+      <div class="map-filter">
+        <select id="filterType">
+          <option value="" data-en="All incident types" data-ja="すべての種別">すべての種別</option>
+          <option value="suicide" data-en="Suicide" data-ja="自殺・自死">自殺・自死</option>
+          <option value="murder" data-en="Murder" data-ja="殺人・他殺">殺人・他殺</option>
+          <option value="lonely_death" data-en="Unattended Death" data-ja="孤独死">孤独死</option>
+          <option value="accident" data-en="Accident" data-ja="事故死">事故死</option>
+          <option value="fire" data-en="Fire" data-ja="火災">火災</option>
+          <option value="other" data-en="Other" data-ja="その他">その他</option>
+        </select>
+      </div>
+      <div id="resultsList"><div class="map-empty" data-en="Move the map and search to see results." data-ja="地図を動かして検索すると結果が表示されます。">地図を動かして検索すると結果が表示されます。</div></div>
+    </aside>
+  </div>
+
+  <script>
+  (function(){
+    var map = L.map('propertyMap').setView([35.6812, 139.7671], 11); // Tokyo
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    var markers = L.layerGroup().addTo(map);
+    var searchBtn = document.getElementById('searchHereBtn');
+    var resultsList = document.getElementById('resultsList');
+    var filterType = document.getElementById('filterType');
+    var isEn = function(){ return localStorage.getItem('yumori-lang') === 'en'; };
+
+    function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+
+    function renderResults(properties){
+      markers.clearLayers();
+      resultsList.innerHTML = '';
+      if (!properties.length) {
+        resultsList.innerHTML = '<div class="map-empty">' + (isEn() ? 'No properties found in this area.' : 'この範囲に物件は見つかりませんでした。') + '</div>';
+        return;
+      }
+      properties.forEach(function(p){
+        var marker = L.marker([p.latitude, p.longitude]).addTo(markers);
+        var typeLabel = isEn() ? (p.incident_type_en || p.incident_type) : p.incident_type;
+        marker.bindPopup(
+          '<div class="popup-addr">' + esc(p.address) + '</div>' +
+          '<div class="popup-meta">' + esc(typeLabel || '') + (p.incident_date ? ' · ' + esc(p.incident_date) : '') + '</div>' +
+          '<div class="popup-cta">' + (isEn()
+            ? 'If it helps, visit a local temple or shrine for prayer, connect with clergy, or simply make a donation.'
+            : 'よろしければ、近隣の寺社にてお参りいただくか、宗教者にご連絡、またはお気持ちの寄付をしていただくこともできます。') + '</div>'
+        );
+        var item = document.createElement('div');
+        item.className = 'map-result';
+        item.innerHTML = '<div class="addr">' + esc(p.address) + '</div><div class="meta">' + esc(typeLabel || '') + (p.incident_date ? ' · ' + esc(p.incident_date) : '') + '</div>';
+        item.addEventListener('click', function(){ map.setView([p.latitude, p.longitude], 15); marker.openPopup(); });
+        resultsList.appendChild(item);
+      });
+    }
+
+    function searchHere(){
+      var b = map.getBounds();
+      var params = new URLSearchParams({
+        north: b.getNorth(), south: b.getSouth(), east: b.getEast(), west: b.getWest()
+      });
+      searchBtn.textContent = isEn() ? 'Searching…' : '検索中…';
+      fetch('/api/lookup/bbox?' + params.toString())
+        .then(function(r){
+          if (r.status === 401) { window.location.href = '/login?next=/map'; return null; }
+          if (r.status === 402) { window.location.href = '/subscribe'; return null; }
+          return r.json();
+        })
+        .then(function(d){
+          if (!d) return;
+          var properties = d.properties || [];
+          var type = filterType.value;
+          if (type) properties = properties.filter(function(p){ return p.incident_type === type; });
+          renderResults(properties);
+        })
+        .catch(function(){ resultsList.innerHTML = '<div class="map-empty">' + (isEn() ? 'Search failed. Please try again.' : '検索に失敗しました。もう一度お試しください。') + '</div>'; })
+        .finally(function(){ searchBtn.innerHTML = '🔍 <span data-en="Search Here" data-ja="この範囲で検索">' + (isEn() ? 'Search Here' : 'この範囲で検索') + '</span>'; searchBtn.style.display = 'none'; });
+    }
+
+    map.on('moveend', function(){ searchBtn.style.display = 'flex'; });
+    searchBtn.addEventListener('click', searchHere);
+    filterType.addEventListener('change', searchHere);
+    searchHere();
+  })();
+  </script>
+
+  <!-- Language Toggle -->
+  <script>
+  (function() {
+    var toggle = document.getElementById('langToggle');
+    var isEnglish = localStorage.getItem('yumori-lang') === 'en';
+    document.querySelectorAll('[data-en]').forEach(function(el) {
+      if (!el.hasAttribute('data-ja')) el.setAttribute('data-ja', el.textContent.trim());
+    });
+    function applyLanguage(en) {
+      document.documentElement.lang = en ? 'en' : 'ja';
+      document.body.setAttribute('data-lang', en ? 'en' : 'ja');
+      document.querySelectorAll('[data-en]').forEach(function(el) {
+        el.textContent = en ? el.getAttribute('data-en') : el.getAttribute('data-ja');
+      });
+    }
+    applyLanguage(isEnglish);
+    if (toggle) {
+      toggle.classList.toggle('active', isEnglish);
+      toggle.addEventListener('click', function() {
+        isEnglish = !isEnglish;
+        localStorage.setItem('yumori-lang', isEnglish ? 'en' : 'ja');
+        toggle.classList.toggle('active', isEnglish);
+        applyLanguage(isEnglish);
+      });
+    }
+  })();
+  </script>
+</body>
+</html>

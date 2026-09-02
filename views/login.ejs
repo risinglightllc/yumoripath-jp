@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-en="Log In — Yumori Path" data-ja="ログイン — 湯守道">ログイン — 湯守道</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Noto+Serif+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/theme.css">
+  <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon/favicon-32x32.png">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <div class="navbar-brand">
+        <a href="/" style="display:flex;align-items:center;gap:10px;text-decoration:none;">
+          <span class="navbar-brand-jp" data-en="Yumori Path">湯守道</span>
+          <span class="navbar-brand-en" data-en="Restoration. Respect. Renewal.">YUMORI PATH</span>
+        </a>
+      </div>
+      <ul class="navbar-nav">
+        <li><a href="/signup" data-en="Sign Up">新規登録</a></li>
+        <li>
+          <button class="lang-toggle" id="langToggle" aria-label="Toggle language">
+            <span class="lang-jp">JP</span><span class="lang-sep">/</span><span class="lang-en">EN</span>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <main style="padding-top:64px;">
+    <section class="form-section">
+      <div class="container">
+        <div class="form-card" style="max-width:440px;">
+          <p class="overline" style="color:var(--color-gold);" data-en="Property Search" data-ja="物件検索">物件検索</p>
+          <h2 data-en="Log In" data-ja="ログイン">ログイン</h2>
+          <p class="form-sub" data-en="Log in to search the full stigmatized-property map." data-ja="ログインすると、事故物件マップを検索できます。">ログインすると、事故物件マップを検索できます。</p>
+          <% if (typeof error !== 'undefined' && error) { %><div class="err" style="background:#fee2e2;color:#991b1b;padding:10px 14px;border-radius:6px;margin-bottom:16px;font-size:13px;"><%= error %></div><% } %>
+          <form method="POST" action="/login">
+            <input type="hidden" name="next" value="<%= next || '' %>">
+            <div class="form-group" style="margin-bottom:16px;">
+              <label data-en="Email Address" data-ja="メールアドレス">メールアドレス <span class="req">*</span></label>
+              <input type="email" name="email" required>
+            </div>
+            <div class="form-group" style="margin-bottom:16px;">
+              <label data-en="Password" data-ja="パスワード">パスワード <span class="req">*</span></label>
+              <input type="password" name="password" required>
+            </div>
+            <div class="form-actions" style="justify-content:stretch;">
+              <button type="submit" class="btn-submit" style="width:100%;" data-en="Log In" data-ja="ログイン">ログイン</button>
+            </div>
+          </form>
+          <p style="text-align:center;margin-top:20px;font-size:0.82rem;color:var(--color-text-mid);">
+            <span data-en="Don't have an account?" data-ja="アカウントをお持ちでないですか？">アカウントをお持ちでないですか？</span>
+            <a href="/signup" style="color:var(--color-indigo);font-weight:500;" data-en="Sign up" data-ja="新規登録">新規登録</a>
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script>
+  (function() {
+    var toggle = document.getElementById('langToggle');
+    var isEnglish = localStorage.getItem('yumori-lang') === 'en';
+    document.querySelectorAll('[data-en]').forEach(function(el) {
+      if (!el.hasAttribute('data-ja')) el.setAttribute('data-ja', el.textContent.trim());
+    });
+    function applyLanguage(en) {
+      document.documentElement.lang = en ? 'en' : 'ja';
+      document.querySelectorAll('[data-en]').forEach(function(el) {
+        el.textContent = en ? el.getAttribute('data-en') : el.getAttribute('data-ja');
+      });
+    }
+    applyLanguage(isEnglish);
+    if (toggle) {
+      toggle.classList.toggle('active', isEnglish);
+      toggle.addEventListener('click', function() {
+        isEnglish = !isEnglish;
+        localStorage.setItem('yumori-lang', isEnglish ? 'en' : 'ja');
+        toggle.classList.toggle('active', isEnglish);
+        applyLanguage(isEnglish);
+      });
+    }
+  })();
+  </script>
+</body>
+</html>
