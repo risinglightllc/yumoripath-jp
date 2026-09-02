@@ -22,6 +22,13 @@ function baseUrl(req) {
   return `${req.protocol}://${req.get('host')}`;
 }
 
+// Newer Stripe API versions moved current_period_end off the top-level
+// Subscription object and onto its first subscription item.
+function currentPeriodEnd(sub) {
+  const raw = sub.current_period_end ?? sub.items?.data?.[0]?.current_period_end;
+  return raw ? new Date(raw * 1000) : null;
+}
+
 router.get('/subscribe', (req, res) => {
   if (!req.session || !req.session.userId) return res.redirect('/login?next=/subscribe');
   res.render('subscribe', { error: req.query.error || null });
@@ -90,7 +97,7 @@ async function stripeWebhookHandler(req, res) {
               stripe_subscription_id: sub.id,
               subscription_status: sub.status,
               subscription_plan: session.metadata?.plan || null,
-              subscription_expires_at: new Date(sub.current_period_end * 1000),
+              subscription_expires_at: currentPeriodEnd(sub),
             });
           }
         }
