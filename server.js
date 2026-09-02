@@ -95,6 +95,27 @@ async function runStartupMigrations() {
   const client = await migPool.connect();
   try {
     await client.query(`CREATE TABLE IF NOT EXISTS _migrations (id SERIAL PRIMARY KEY, name VARCHAR(255) NOT NULL UNIQUE, applied_at TIMESTAMPTZ DEFAULT NOW())`);
+    // Core `users` table — normally created by migrate.js's runCoreMigrations
+    // (via `npm run build`), but this service's Render build command is just
+    // `npm install`, so migrate.js never runs. Create it here too so startup
+    // is self-sufficient regardless of build command.
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS users (
+        id               SERIAL PRIMARY KEY,
+        email            VARCHAR(255) NOT NULL,
+        name             VARCHAR(255),
+        password_hash    VARCHAR(255),
+        created_at       TIMESTAMPTZ DEFAULT NOW(),
+        updated_at       TIMESTAMPTZ DEFAULT NOW(),
+        stripe_subscription_id VARCHAR(255),
+        subscription_status    VARCHAR(50),
+        subscription_plan     VARCHAR(255),
+        subscription_expires_at TIMESTAMPTZ,
+        subscription_updated_at TIMESTAMPTZ
+      )
+    `);
+    await client.query(`CREATE UNIQUE INDEX IF NOT EXISTS users_email_unique_idx ON users (LOWER(email))`);
+    await client.query(`CREATE INDEX IF NOT EXISTS users_stripe_subscription_id_idx ON users (stripe_subscription_id)`);
     const dir = path.join(__dirname, 'migrations');
     if (fs.existsSync(dir)) {
       const files = fs.readdirSync(dir).filter(f => f.endsWith('.js') || f.endsWith('.sql')).sort();
