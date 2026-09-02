@@ -112,7 +112,7 @@ async function stripeWebhookHandler(req, res) {
             stripe_subscription_id: sub.id,
             subscription_status: event.type === 'customer.subscription.deleted' ? 'canceled' : sub.status,
             subscription_plan: user.subscription_plan,
-            subscription_expires_at: new Date(sub.current_period_end * 1000),
+            subscription_expires_at: currentPeriodEnd(sub),
           });
         }
         break;
